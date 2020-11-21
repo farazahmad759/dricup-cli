@@ -1,12 +1,36 @@
 {
-  "name": "express-crud-api-generator",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "@farazahmad759/ecag",
+  "version": "1.0.1",
+  "description": "A CLI to bootstrap my new projects",
+  "main": "src/index.js",
+  "bin": {
+    "ecag": "bin/ecag"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "keywords": [
+    "cli",
+    "ecag"
+  ],
+  "files": [
+    "bin/",
+    "src/",
+    "templates/"
+  ],
+  "author": "Faraz Ahmad",
+  "license": "MIT",
+  "dependencies": {
+    "arg": "^5.0.0",
+    "chalk": "^4.1.0",
+    "esm": "^3.2.18",
+    "execa": "^4.1.0",
+    "inquirer": "^7.3.3",
+    "listr": "^0.14.3",
+    "ncp": "^2.0.0",
+    "pkg-install": "^1.0.0"
+  }
 }
