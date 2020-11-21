@@ -1,6 +1,7 @@
 import arg from "arg";
 import inquirer from "inquirer";
 import { createProject } from "./main";
+import dvMigrations from "./../generators/index.js";
 var fs = require("fs");
 
 function parseArgumentsIntoOptions(rawArgs) {
@@ -71,17 +72,119 @@ export async function cli(args) {
   };
 
   // #1 read all schema files from targetDirectory/db/schemas and return json objects
-  let jsonSchemas = [];
+  let jsonFullContents = [];
   let schemaDirectory = options.targetDirectory + "/db/schemas";
-  fs.readdirSync(schemaDirectory).forEach((file) => {
+  fs.readdirSync(schemaDirectory).forEach((file, i) => {
     var obj = JSON.parse(fs.readFileSync(schemaDirectory + "/" + file, "utf8"));
-    jsonSchemas.push(obj);
+    jsonFullContents.push({});
+    jsonFullContents[i].schema = obj;
   });
-  // #2 create migration files
+  // #2 create contents of migration files
+  jsonFullContents.forEach((_content, i) => {
+    let _mig = dvMigrations.buildContent({ jsonData: _content.schema });
+    jsonFullContents[i].migration = _mig;
+  });
+  // console.log(jsonFullContents);
+
+  // #3 create migration files
+  jsonFullContents.forEach((_content) => {
+    createFile({
+      name: _content.schema.tableName,
+      type: "migration",
+      content: _content.migration,
+      dir: options.targetDirectory + "/db/",
+      preName: "create_table",
+      postName: "",
+      extension: ".js",
+      _jsonData: {},
+    });
+  });
 
   // #3 create model files
 
   // #4 create controllers
-
-  console.log(jsonSchemas);
 }
+
+// helper functions
+const createFile = (params) => {
+  let dvCrudConfig = {
+    migrations_path: "migrations/",
+    models_path: "models/",
+    controllers_path: "controllers/",
+    views_path: "views/",
+  };
+  let {
+    name,
+    type,
+    content,
+    dir,
+    timeStamp,
+    preName,
+    postName,
+    extension,
+    _jsonData,
+  } = params;
+  if (!name) {
+    console.error("params.name is required");
+    return false;
+  }
+  if (!type) {
+    console.error("params.type is required");
+    return false;
+  }
+  if (!content) {
+    content = "";
+  }
+  if (!dir) {
+    dir = "db/";
+  }
+  if (!timeStamp) {
+    timeStamp = "";
+  }
+  if (!preName) {
+    preName = "";
+  }
+  if (!postName) {
+    postName = "";
+  }
+  if (!extension) {
+    extension = ".js";
+  }
+  if (type === "migration") {
+    dir += dvCrudConfig.migrations_path;
+  } else if (type === "controller" || type === "api") {
+    if (!_jsonData) {
+      console.error("_jsonData is required for controllers/apis");
+    } else {
+      dir += dvCrudConfig.controllers_path + _jsonData.tableName + "/";
+    }
+  } else if (type === "model") {
+    dir += dvCrudConfig.models_path;
+  } else if (type === "view") {
+    dir += dvCrudConfig.views_path;
+  }
+
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir);
+  }
+  let formattedName = "";
+  formattedName += timeStamp + "_" + preName + "_" + name + "_" + postName;
+  formattedName = formattedName.replace("__", "_");
+  formattedName = formattedName.replace("__", "_");
+  formattedName = formattedName.replace("__", "_");
+  formattedName = formattedName.replace("__", "_");
+  if (formattedName.charAt(0) === "_") {
+    formattedName = formattedName.substring(1);
+  }
+  if (formattedName.charAt(formattedName.length - 1) === "_") {
+    formattedName = formattedName.slice(0, -1);
+  }
+  formattedName += extension;
+  fs.writeFile(dir + formattedName, content, function (err) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(formattedName + " has beend created");
+    }
+  });
+};
