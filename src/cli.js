@@ -84,10 +84,14 @@ export async function cli(args) {
     let _mig = dvMigrations.buildContent({ jsonData: _content.schema });
     jsonFullContents[i].migration = _mig;
   });
-  // console.log(jsonFullContents);
 
-  // #3 create migration files
+  // #3 create contents of model files
+
+  // #4 create contents of controllers files
+
+  // #5 create files
   jsonFullContents.forEach((_content) => {
+    // migration files
     createFile({
       name: _content.schema.tableName,
       type: "migration",
@@ -98,11 +102,12 @@ export async function cli(args) {
       extension: ".js",
       _jsonData: {},
     });
+    // model files
+
+    // controller files
+
+    // view files
   });
-
-  // #3 create model files
-
-  // #4 create controllers
 }
 
 // helper functions
