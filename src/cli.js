@@ -1,6 +1,7 @@
 import arg from "arg";
 import inquirer from "inquirer";
 import { createProject } from "./main";
+var fs = require("fs");
 
 function parseArgumentsIntoOptions(rawArgs) {
   const args = arg(
@@ -64,15 +65,23 @@ async function promptForMissingOptions(options) {
 export async function cli(args) {
   let options = parseArgumentsIntoOptions(args);
   options = await promptForMissingOptions(options);
-  await createProject(options);
-  // options = {
-  //   ...options,
-  //   targetDirectory: options.targetDirectory || process.cwd(),
-  // };
-  // var fs = require("fs");
-  // var obj = JSON.parse(
-  //   fs.readFileSync(options.targetDirectory + "/my-file.json", "utf8")
-  // );
+  options = {
+    ...options,
+    targetDirectory: options.targetDirectory || process.cwd(),
+  };
 
-  console.log(options);
+  // #1 read all schema files from targetDirectory/db/schemas and return json objects
+  let jsonSchemas = [];
+  let schemaDirectory = options.targetDirectory + "/db/schemas";
+  fs.readdirSync(schemaDirectory).forEach((file) => {
+    var obj = JSON.parse(fs.readFileSync(schemaDirectory + "/" + file, "utf8"));
+    jsonSchemas.push(obj);
+  });
+  // #2 create migration files
+
+  // #3 create model files
+
+  // #4 create controllers
+
+  console.log(jsonSchemas);
 }
