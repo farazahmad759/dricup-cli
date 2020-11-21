@@ -1,7 +1,8 @@
 import arg from "arg";
 import inquirer from "inquirer";
 import { createProject } from "./main";
-import dvMigrations from "./../generators/index.js";
+import dvMigrations from "../generators/migrations/index.js";
+import dvModels from "../generators/models/index.js";
 var fs = require("fs");
 
 function parseArgumentsIntoOptions(rawArgs) {
@@ -79,15 +80,15 @@ export async function cli(args) {
     jsonFullContents.push({});
     jsonFullContents[i].schema = obj;
   });
-  // #2 create contents of migration files
+  // #2 create contents
   jsonFullContents.forEach((_content, i) => {
+    // migration content
     let _mig = dvMigrations.buildContent({ jsonData: _content.schema });
     jsonFullContents[i].migration = _mig;
+    // model content
+    let _model = dvModels.buildContent({ jsonData: _content.schema });
+    jsonFullContents[i].model = _model;
   });
-
-  // #3 create contents of model files
-
-  // #4 create contents of controllers files
 
   // #5 create files
   jsonFullContents.forEach((_content) => {
@@ -103,6 +104,16 @@ export async function cli(args) {
       _jsonData: {},
     });
     // model files
+    createFile({
+      name: _content.schema.tableName,
+      type: "model",
+      content: _content.model,
+      dir: options.targetDirectory + "/db/",
+      preName: "",
+      postName: "",
+      extension: ".js",
+      _jsonData: {},
+    });
 
     // controller files
 
