@@ -24,7 +24,18 @@ export function buildContent(params) {
    * @param {json} res
    */
   exports.createOne = async (req, res) => {
-
+    let _insert = req.body;
+    try {
+      let _res = await dbModel.query().insert(_insert);
+      res.send({
+        message: "Record created successfully",
+        data: _res
+      })
+    } catch (err) {
+      res.send({
+        error: err
+      })
+    }
   };`;
 
   /** =============
@@ -35,11 +46,22 @@ export function buildContent(params) {
   /**
    * @route /:id
    * @method GET
-   * @description Show the Record in a View
+   * @description Get a Record by id
    * @param {json} req
    * @param {json} res
    */
   exports.getOne = async (req, res) => {
+    try {
+      let _res = await dbModel.query().findById(req.params.id);
+      res.send({
+        message: "Record found successfully",
+        data: _res
+      });
+    } catch(err) {
+      res.send({
+        error: err
+      });  
+    }
   };`;
 
   /** =============
@@ -50,11 +72,23 @@ export function buildContent(params) {
   /**
    * @route /:id
    * @method PUT
-   * @description Update the Record in the database
+   * @description Update the Record in the database by id
    * @param {json} req
    * @param {json} res
    */
   exports.updateOne = async (req, res) => {
+    try {
+      let _insert = req.body;
+      let _res = await dbModel.query().findById(req.params.id).patch(_insert);
+      res.send({
+        message: "Record updated successfully",
+        data: _res
+      });  
+    } catch(err) {
+      res.send({
+        error: err
+      });  
+    }
   };`;
 
   /** =============
@@ -65,11 +99,22 @@ export function buildContent(params) {
   /**
    * @route /:id
    * @method DELETE
-   * @description Delete the record from the database
+   * @description Delete the record from the database by id
    * @param {json} req
    * @param {json} res
    */
   exports.deleteOne = async (req, res) => {
+    try {
+      let _res = await dbModel.query().deleteById(req.params.id);
+      res.send({
+        message: "Record deleted successfully",
+        data: _res
+      });  
+    } catch(err) {
+      res.send({
+        error: err
+      });  
+    }
   };
   `;
 
@@ -81,7 +126,7 @@ export function buildContent(params) {
   /**
    * @route /
    * @method GET
-   * @description Fetch all the records
+   * @description Get all the records
    * @param {json} req
    * @param {json} res
    */
