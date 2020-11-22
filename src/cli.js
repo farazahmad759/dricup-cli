@@ -2,8 +2,9 @@ import arg from "arg";
 import inquirer from "inquirer";
 import { createProject } from "./main";
 import dvGenerators from "./generators/index";
+import { readEcagConfigFile } from "./utils/functions";
 var fs = require("fs");
-
+var dvCrudConfig = readEcagConfigFile();
 function parseArgumentsIntoOptions(rawArgs) {
   const args = arg(
     {
@@ -65,11 +66,16 @@ async function promptForMissingOptions(options) {
 }
 export async function cli(args) {
   let options = parseArgumentsIntoOptions(args);
-  options = await promptForMissingOptions(options);
+  // options = await promptForMissingOptions(options);
   options = {
     ...options,
     targetDirectory: options.targetDirectory || process.cwd(),
   };
+
+  // #0 copy files
+  createProject(options);
+
+  // TODO if ecag.config.js exists in targetDirectory, then read dvCrudConfig from there
 
   // #1 read all schema files from targetDirectory/db/schemas and return json objects
   let jsonFullContents = [];
@@ -176,13 +182,13 @@ export async function cli(args) {
 
 // helper functions
 const createFile = (params) => {
-  let dvCrudConfig = {
-    migrations_path: "migrations/",
-    models_path: "models/",
-    controllers_path: "controllers/",
-    views_path: "views/",
-    routes_path: "routes/",
-  };
+  // let dvCrudConfig = {
+  //   migrations_path: "migrations/",
+  //   models_path: "models/",
+  //   controllers_path: "controllers/",
+  //   views_path: "views/",
+  //   routes_path: "routes/",
+  // };
   let {
     name,
     type,
