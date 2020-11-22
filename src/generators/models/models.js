@@ -1,15 +1,21 @@
 import fs from "fs";
+import { getRelativePath, readEcagConfigFile } from "./../../utils/functions";
 var pluralize = require("pluralize");
 
 export function buildContent(params) {
   let { jsonData } = params;
   let modelName = pluralize.singular(jsonData.tableName);
   modelName = capitalizeFirstLetter(modelName);
+  let dvCrudConfig = readEcagConfigFile();
+  let knexFilePath = getRelativePath(
+    dvCrudConfig.knexfile_path,
+    dvCrudConfig.models_path + jsonData.tableName + "/"
+  );
   let c_content = {};
   c_content.imports = `
   const { Model } = require('objection');
   const knex = require('knex');
-  const knexFile = require('../../knexfile');
+  const knexFile = require('${knexFilePath}knexfile');
   `;
   c_content.main = `
   Model.knex(knex(knexFile.knexConfig.development));
