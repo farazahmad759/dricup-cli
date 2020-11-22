@@ -3,6 +3,7 @@ import inquirer from "inquirer";
 import { createProject } from "./main";
 import dvMigrations from "../generators/migrations/index.js";
 import dvModels from "../generators/models/index.js";
+import dvControllers from "../generators/controllers/index.js";
 var fs = require("fs");
 
 function parseArgumentsIntoOptions(rawArgs) {
@@ -88,9 +89,14 @@ export async function cli(args) {
     // model content
     let _model = dvModels.buildContent({ jsonData: _content.schema });
     jsonFullContents[i].model = _model;
+    // controller content
+    let _controller = dvControllers.buildContent({ jsonData: _content.schema });
+    jsonFullContents[i].controller = _controller;
   });
 
-  // #5 create files
+  // console.log(jsonFullContents[0].controller);
+
+  // #3 create files
   jsonFullContents.forEach((_content) => {
     // migration files
     createFile({
@@ -116,6 +122,16 @@ export async function cli(args) {
     });
 
     // controller files
+    createFile({
+      name: _content.schema.tableName,
+      type: "controller",
+      content: _content.controller,
+      dir: options.targetDirectory + "/db/",
+      preName: "",
+      postName: "",
+      extension: ".js",
+      _jsonData: {},
+    });
 
     // view files
   });
