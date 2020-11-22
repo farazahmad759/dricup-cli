@@ -6,5 +6,5 @@
   "models_path": "db/models/",
   "controllers_path": "db/controllers/",
   "views_path": "db/views/",
-  "routes_path": "db/routes/"
+  "routes_path": "routes/"
 }
