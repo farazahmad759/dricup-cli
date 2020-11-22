@@ -130,7 +130,7 @@ export async function cli(args) {
       preName: "",
       postName: "",
       extension: ".js",
-      _jsonData: {},
+      _jsonData: _content.controller,
     });
 
     // view files
@@ -188,7 +188,7 @@ const createFile = (params) => {
     if (!_jsonData) {
       console.error("_jsonData is required for controllers/apis");
     } else {
-      dir += dvCrudConfig.controllers_path + _jsonData.tableName + "/";
+      dir += dvCrudConfig.controllers_path;
     }
   } else if (type === "model") {
     dir += dvCrudConfig.models_path;
