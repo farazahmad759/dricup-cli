@@ -39,7 +39,7 @@ export function buildContent(params) {
    * @param {json} req
    * @param {json} res
    */
-  exports.getOne = (req, res) => {
+  exports.getOne = async (req, res) => {
   };`;
 
   /** =============
@@ -69,7 +69,7 @@ export function buildContent(params) {
    * @param {json} req
    * @param {json} res
    */
-  exports.deleteOne = (req, res) => {
+  exports.deleteOne = async (req, res) => {
   };
   `;
 
@@ -85,7 +85,7 @@ export function buildContent(params) {
    * @param {json} req
    * @param {json} res
    */
-  exports.getAll = (req, res) => {
+  exports.getAll = async (req, res) => {
 
     // base variables
     let filterQuery = {};
@@ -93,13 +93,29 @@ export function buildContent(params) {
     let filterOrder = [['id', 'ASC']];
 
     // construct query
-    if (req.query) {
+    try {
+      let _res = dbModel.query();`;
+  jsonData.fields.forEach((fld) => {
+    c_content.index += `
+        if(req.query.${fld.title}) {
+          _res = _res.where('${fld.title}', 'like', '%' + req.query.${fld.title} + '%')
+        }
+        `;
+  });
+  c_content.index += `
+        _res = await _res;
+      
+        // return response
+        res.send({
+          message: "Your searched fetched the following results",
+          data: _res
+        })    
+    } catch(err) {
+      res.send({
+        errorMessage: "Error occurred",
+        error: err
+      }) 
     }
-  
-    // apply query
-    res.send({
-      message: "hello2"
-    })
   };`;
 
   let _ret = ``;
