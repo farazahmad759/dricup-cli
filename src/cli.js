@@ -120,7 +120,23 @@ export async function cli(args) {
       extension: ".js",
       _jsonData: {},
     });
-
+    fs.writeFile(
+      "db/models/index.js",
+      `
+      var User = require('./users')
+      let models = {
+        User
+      }
+      module.exports = models;
+      `,
+      function (err) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log("db/models/index.js" + " has been created");
+        }
+      }
+    );
     // controller files
     createFile({
       name: _content.schema.tableName,

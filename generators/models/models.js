@@ -9,7 +9,7 @@ export function buildContent(params) {
   c_content.imports = `
   const { Model } = require('objection');
   const knex = require('knex');
-  const knexFile = require('../../../knexfile');
+  const knexFile = require('../../knexfile');
   `;
   c_content.main = `
   Model.knex(knex(knexFile.knexConfig.development));

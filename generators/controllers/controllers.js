@@ -8,7 +8,7 @@ export function buildContent(params) {
   let c_content = {};
   c_content.imports = `
   const models = require('../models/index.js');
-  const dbModel = models[${modelName}];
+  const dbModel = models.${modelName};
   const modelName = '${modelName}';`;
 
   /** =============
@@ -93,10 +93,13 @@ export function buildContent(params) {
     let filterOrder = [['id', 'ASC']];
 
     // construct query
-    if (req.query.filterOrder) {
+    if (req.query) {
     }
   
     // apply query
+    res.send({
+      message: "hello2"
+    })
   };`;
 
   let _ret = ``;
