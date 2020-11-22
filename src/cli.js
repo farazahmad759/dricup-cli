@@ -4,6 +4,7 @@ import { createProject } from "./main";
 import dvMigrations from "../generators/migrations/index.js";
 import dvModels from "../generators/models/index.js";
 import dvControllers from "../generators/controllers/index.js";
+import dvRoutes from "../generators/routes/index.js";
 var fs = require("fs");
 
 function parseArgumentsIntoOptions(rawArgs) {
@@ -92,12 +93,16 @@ export async function cli(args) {
     // controller content
     let _controller = dvControllers.buildContent({ jsonData: _content.schema });
     jsonFullContents[i].controller = _controller;
+    // route content
+    let _route = dvRoutes.buildContent({ jsonData: _content.schema });
+    jsonFullContents[i].route = _route;
   });
 
   // console.log(jsonFullContents[0].controller);
 
   // #3 create files
   jsonFullContents.forEach((_content) => {
+    console.log("=======", _content.schema.tableName);
     // migration files
     createFile({
       name: _content.schema.tableName,
@@ -148,6 +153,17 @@ export async function cli(args) {
       extension: ".js",
       _jsonData: _content.controller,
     });
+    // route files
+    createFile({
+      name: _content.schema.tableName,
+      type: "route",
+      content: _content.route,
+      dir: options.targetDirectory + "/",
+      preName: "",
+      postName: "",
+      extension: ".js",
+      _jsonData: _content.route,
+    });
 
     // view files
   });
@@ -160,6 +176,7 @@ const createFile = (params) => {
     models_path: "models/",
     controllers_path: "controllers/",
     views_path: "views/",
+    routes_path: "routes/",
   };
   let {
     name,
@@ -206,6 +223,8 @@ const createFile = (params) => {
     } else {
       dir += dvCrudConfig.controllers_path;
     }
+  } else if (type === "route") {
+    dir += dvCrudConfig.routes_path;
   } else if (type === "model") {
     dir += dvCrudConfig.models_path;
   } else if (type === "view") {
