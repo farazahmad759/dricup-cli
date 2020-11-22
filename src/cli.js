@@ -1,10 +1,7 @@
 import arg from "arg";
 import inquirer from "inquirer";
 import { createProject } from "./main";
-import dvMigrations from "../generators/migrations/index.js";
-import dvModels from "../generators/models/index.js";
-import dvControllers from "../generators/controllers/index.js";
-import dvRoutes from "../generators/routes/index.js";
+import dvGenerators from "./generators/index";
 var fs = require("fs");
 
 function parseArgumentsIntoOptions(rawArgs) {
@@ -85,16 +82,24 @@ export async function cli(args) {
   // #2 create contents
   jsonFullContents.forEach((_content, i) => {
     // migration content
-    let _mig = dvMigrations.buildContent({ jsonData: _content.schema });
+    let _mig = dvGenerators.dvMigrations.buildContent({
+      jsonData: _content.schema,
+    });
     jsonFullContents[i].migration = _mig;
     // model content
-    let _model = dvModels.buildContent({ jsonData: _content.schema });
+    let _model = dvGenerators.dvModels.buildContent({
+      jsonData: _content.schema,
+    });
     jsonFullContents[i].model = _model;
     // controller content
-    let _controller = dvControllers.buildContent({ jsonData: _content.schema });
+    let _controller = dvGenerators.dvControllers.buildContent({
+      jsonData: _content.schema,
+    });
     jsonFullContents[i].controller = _controller;
     // route content
-    let _route = dvRoutes.buildContent({ jsonData: _content.schema });
+    let _route = dvGenerators.dvRoutes.buildContent({
+      jsonData: _content.schema,
+    });
     jsonFullContents[i].route = _route;
   });
 
