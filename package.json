@@ -1,9 +1,10 @@
 {
   "name": "@farazahmad759/dricup-crud-express",
   "version": "1.0.2",
-  "description": "A CLI to bootstrap my new projects",
+  "description": "A CLI to quickly create Express JS Api's",
   "main": "src/index.js",
   "bin": {
+    "@farazahmad759/dricup-crud-express": "bin/dricup-crud-express",
     "dricup-crud-express": "bin/dricup-crud-express"
   },
   "publishConfig": {
@@ -11,9 +12,9 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "git:promote-feature-to-development": "git checkout development && git merge feature && git push origin development && git checkout feature",
-    "git:promote-development-to-main": "git checkout main && git merge development && git push origin main && git checkout feature",
-    "git:promote-main-to-v0.1": "git checkout v0.1 && git merge main && git push origin v0.1 && git checkout feature"
+    "git:merge-feature-in-development": "git checkout development && git merge feature && git push origin development && git checkout feature",
+    "git:merge-development-in-main": "git checkout main && git merge development && git push origin main && git checkout feature",
+    "git:merge-main-in-v0.1": "git checkout v0.1 && git merge main && git push origin v0.1 && git checkout feature"
   },
   "keywords": [
     "cli",
