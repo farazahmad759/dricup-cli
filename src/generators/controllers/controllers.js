@@ -38,11 +38,11 @@ export function buildContent(params) {
         links: {
           self: req.originalUrl
         },
-        "meta": {
+        meta: {
           "copyright": "Copyright 2020 ${dvCrudConfig.YOUR_COMPANY_NAME}.",
         },
         data: _res ? _res : null,
-        "jsonapi": {
+        jsonapi: {
           "version": "${dvCrudConfig.JSON_API_VERSION}"
         }
     })
@@ -52,7 +52,7 @@ export function buildContent(params) {
           {
             title: "Error occurred while adding a Record in the database.",
             meta: {
-              name: err.nativeError ? err.nativeError.name: null,
+              name: err ? err.name: null,
               nativeError: {
                 code: err.nativeError ? err.nativeError.code: null,
                 sqlMessage: err.nativeError ? err.nativeError.sqlMessage: null,
@@ -83,11 +83,11 @@ export function buildContent(params) {
         links: {
           self: req.originalUrl
         },
-        "meta": {
+        meta: {
           "copyright": "Copyright 2020 ${dvCrudConfig.YOUR_COMPANY_NAME}.",
         },
         data: _res ? _res : null,
-        "jsonapi": {
+        jsonapi: {
           "version": "${dvCrudConfig.JSON_API_VERSION}"
         }
     });
@@ -97,7 +97,7 @@ export function buildContent(params) {
           {
             title: "Failed to get a Record with id = " + req.params.id,
             meta: {
-              name: err.nativeError ? err.nativeError.name: null,
+              name: err ? err.name: null,
               nativeError: {
                 code: err.nativeError ? err.nativeError.code: null,
                 sqlMessage: err.nativeError ? err.nativeError.sqlMessage: null,
@@ -129,11 +129,11 @@ export function buildContent(params) {
         links: {
           self: req.originalUrl
         },
-        "meta": {
+        meta: {
           "copyright": "Copyright 2020 ${dvCrudConfig.YOUR_COMPANY_NAME}.",
         },
         data: _res ? _res : null,
-        "jsonapi": {
+        jsonapi: {
           "version": "${dvCrudConfig.JSON_API_VERSION}"
         }
       });  
@@ -143,7 +143,7 @@ export function buildContent(params) {
           {
             title: "Failed to update the Record with id = " + req.params.id,
             meta: {
-              name: err.nativeError ? err.nativeError.name: null,
+              name: err ? err.name: null,
               nativeError: {
                 code: err.nativeError ? err.nativeError.code: null,
                 sqlMessage: err.nativeError ? err.nativeError.sqlMessage: null,
@@ -174,13 +174,13 @@ export function buildContent(params) {
         links: {
           self: req.originalUrl
         },
-        "meta": {
+        meta: {
           "copyright": "Copyright 2020 ${dvCrudConfig.YOUR_COMPANY_NAME}.",
         },
         data: {
           id: _res ? req.params.id : null
         },
-        "jsonapi": {
+        jsonapi: {
           "version": "${dvCrudConfig.JSON_API_VERSION}"
         }
       });  
@@ -190,7 +190,7 @@ export function buildContent(params) {
           {
             title: "Failed to delete the Record with id = " + req.params.id,
             meta: {
-              name: err.nativeError ? err.nativeError.name: null,
+              name: err ? err.name: null,
               nativeError: {
                 code: err.nativeError ? err.nativeError.code: null,
                 sqlMessage: err.nativeError ? err.nativeError.sqlMessage: null,
@@ -240,11 +240,11 @@ export function buildContent(params) {
           links: {
             self: req.originalUrl
           },
-          "meta": {
+          meta: {
             "copyright": "Copyright 2020 ${dvCrudConfig.YOUR_COMPANY_NAME}.",
           },
           data: _res,
-          "jsonapi": {
+          jsonapi: {
             "version": "${dvCrudConfig.JSON_API_VERSION}"
           }
         });
@@ -254,7 +254,7 @@ export function buildContent(params) {
           {
             title: "Failed to get Records",
             meta: {
-              name: err.nativeError ? err.nativeError.name: null,
+              name: err ? err.name: null,
               nativeError: {
                 code: err.nativeError ? err.nativeError.code: null,
                 sqlMessage: err.nativeError ? err.nativeError.sqlMessage: null,
