@@ -23,10 +23,12 @@ export function buildContent(params) {
    *  =============
    */
   c_content.createOne = `
-  /**
+  /** 
+   * ====================================================
    * @route /
    * @method POST
    * @description Create a Record in database
+   * ====================================================
    */
   exports.createOne = async (req, res) => {
     let _insert = req.body;
@@ -68,9 +70,11 @@ export function buildContent(params) {
    */
   c_content.getOne = `
   /**
+   * ====================================================
    * @route /:id
    * @method GET
    * @description Get a Record by id
+   * ====================================================
    */
   exports.getOne = async (req, res) => {
     try {
@@ -111,9 +115,11 @@ export function buildContent(params) {
    */
   c_content.updateOne = `
   /**
+   * ====================================================
    * @route /:id
    * @method PUT
    * @description Update a Record by id
+   * ====================================================
    */
   exports.updateOne = async (req, res) => {
     try {
@@ -155,9 +161,11 @@ export function buildContent(params) {
    */
   c_content.deleteOne = `
   /**
+   * ====================================================
    * @route /:id
    * @method DELETE
    * @description Delete a record by id
+   * ====================================================
    */
   exports.deleteOne = async (req, res) => {
     try {
@@ -199,11 +207,13 @@ export function buildContent(params) {
    *  GET ALL
    *  =============
    */
-  c_content.index = `
+  c_content.getAll = `
   /**
+   * ====================================================
    * @route /
    * @method GET
    * @description Get all the records
+   * ====================================================
    */
   exports.getAll = async (req, res) => {
 
@@ -216,13 +226,13 @@ export function buildContent(params) {
     try {
       let _res = dbModel.query();`;
   jsonData.fields.forEach((fld) => {
-    c_content.index += `
+    c_content.getAll += `
         if(req.query.${fld.title}) {
           _res = _res.where('${fld.title}', 'like', '%' + req.query.${fld.title} + '%')
         }
         `;
   });
-  c_content.index += `
+  c_content.getAll += `
         _res = await _res;
       
         // return response
