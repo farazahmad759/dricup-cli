@@ -15,6 +15,10 @@
     "git:merge-development-in-main": "git checkout main && git merge development && git push origin main && git checkout feature",
     "git:merge-main-in-v1.0": "git checkout v1.0 && git merge main && git push origin v1.0 && git checkout feature"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/farazahmad759/dricup-crud-express.git"
+  },
   "keywords": [
     "cli",
     "dricup-crud-express"
