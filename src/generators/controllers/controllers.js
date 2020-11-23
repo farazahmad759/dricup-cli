@@ -120,7 +120,16 @@ export function buildContent(params) {
       let _insert = req.body;
       let _res = await dbModel.query().patchAndFetchById(req.params.id, _insert);
       res.send({
-        data: _res ? _res : null
+        links: {
+          self: req.originalUrl
+        },
+        "meta": {
+          "copyright": "Copyright 2020 ${dvCrudConfig.YOUR_COMPANY_NAME}.",
+        },
+        data: _res ? _res : null,
+        "jsonapi": {
+          "version": "${dvCrudConfig.JSON_API_VERSION}"
+        }
       });  
     } catch(err) {
       res.send({
@@ -154,8 +163,17 @@ export function buildContent(params) {
     try {
       let _res = await dbModel.query().deleteById(req.params.id);
       res.send({
+        links: {
+          self: req.originalUrl
+        },
+        "meta": {
+          "copyright": "Copyright 2020 ${dvCrudConfig.YOUR_COMPANY_NAME}.",
+        },
         data: {
           id: _res ? req.params.id : null
+        },
+        "jsonapi": {
+          "version": "${dvCrudConfig.JSON_API_VERSION}"
         }
       });  
     } catch(err) {
