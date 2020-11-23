@@ -1,10 +1,10 @@
 {
-  "name": "@farazahmad759/ecag",
+  "name": "@farazahmad759/dricup-crud-express",
   "version": "1.0.1",
   "description": "A CLI to bootstrap my new projects",
   "main": "src/index.js",
   "bin": {
-    "ecag": "bin/ecag"
+    "dricup-crud-express": "bin/dricup-crud-express"
   },
   "publishConfig": {
     "access": "public"
@@ -15,7 +15,7 @@
   },
   "keywords": [
     "cli",
-    "ecag"
+    "dricup-crud-express"
   ],
   "files": [
     "bin/",
