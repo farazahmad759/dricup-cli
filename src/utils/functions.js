@@ -22,3 +22,40 @@ export const readEcagConfigFile = () => {
   }
   return dvCrudConfig;
 };
+
+export const updatePackageDotJsonFile = async () => {
+  var npmview = require("npmview");
+  const editJsonFile = require("edit-json-file");
+  let file = editJsonFile(`${process.cwd()}/package.json`);
+  // knex js
+  npmview("knex", function (err, version, moduleInfo) {
+    if (err) {
+      console.error(err);
+      return;
+    }
+    console.log("knex Version:", version);
+    file.set("dependencies.knex", "^" + version);
+    file.save();
+    console.log(file);
+  });
+  //   objection js
+  npmview("objection", function (err, version, moduleInfo) {
+    if (err) {
+      console.error(err);
+      return;
+    }
+    console.log("objection Version:", version);
+    file.set("dependencies.objection", "^" + version);
+    file.save();
+  });
+  // mysql
+  npmview("mysql", function (err, version, moduleInfo) {
+    if (err) {
+      console.error(err);
+      return;
+    }
+    console.log("mysql Version:", version);
+    file.set("dependencies.mysql", "^" + version);
+    file.save();
+  });
+};

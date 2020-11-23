@@ -6,6 +6,7 @@ import { promisify } from "util";
 import execa from "execa";
 import Listr from "listr";
 import { projectInstall } from "pkg-install";
+import { updatePackageDotJsonFile } from "./utils/functions";
 
 const access = promisify(fs.access);
 const copy = promisify(ncp);
@@ -47,6 +48,10 @@ export async function createProject(options) {
   }
 
   const tasks = new Listr([
+    {
+      title: "Update package.json",
+      task: () => updatePackageDotJsonFile(),
+    },
     {
       title: "Copy project files",
       task: () => copyTemplateFiles(options),

@@ -27,11 +27,13 @@
   "dependencies": {
     "arg": "^5.0.0",
     "chalk": "^4.1.0",
+    "edit-json-file": "^1.5.0",
     "esm": "^3.2.18",
     "execa": "^4.1.0",
     "inquirer": "^7.3.3",
     "listr": "^0.14.3",
     "ncp": "^2.0.0",
+    "npmview": "^0.0.4",
     "pkg-install": "^1.0.0",
     "pluralize": "^8.0.0"
   }
