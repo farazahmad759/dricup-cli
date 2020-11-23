@@ -1,6 +1,6 @@
 {
   "name": "@farazahmad759/dricup-crud-express",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "A CLI to quickly create Express JS Api's",
   "main": "src/index.js",
   "bin": {
@@ -13,8 +13,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "git:merge-feature-in-development": "git checkout development && git merge feature && git push origin development && git checkout feature",
     "git:merge-development-in-main": "git checkout main && git merge development && git push origin main && git checkout feature",
-    "git:merge-main-in-v0.1": "git checkout v0.1 && git merge main && git push origin v0.1 && git checkout feature",
-    "git:merge-feature-to-v0.1-danger": "npm run git:merge-feature-in-development && npm run git:merge-development-in-main && npm run git:merge-main-in-v0.1"
+    "git:merge-main-in-v1.0": "git checkout v1.0 && git merge main && git push origin v1.0 && git checkout feature"
   },
   "keywords": [
     "cli",

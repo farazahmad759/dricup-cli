@@ -8,7 +8,7 @@ Create quick RESTful APIs using Express + Knex + Objection. A single command `dr
 
 You will save hours of your development.
 # Getting started
-You get CRUD APIs in three simple steps.
+You get CRUD APIs in six simple steps.
 ## Step 1
 Install the package globally using 
 ```
@@ -81,6 +81,23 @@ ecag.config.json
 ```
 
 ## Step 5
+Open knexfile.js and adjust your database credentials. A sample configuration will be like this
+```
+client: "mysql",
+connection: {
+    host: "127.0.0.1",
+    database: "express-test-app",
+    user: "root",
+    password: "password",
+},
+migrations: {
+    directory: __dirname + "/db/migrations",
+},
+seeds: {
+    directory: __dirname + "/db/seeds/development",
+},
+```
+## Step 6
 In your `app.js` file, add the following two lines
 ```
 /** ================
