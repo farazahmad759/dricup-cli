@@ -27,8 +27,6 @@ export function buildContent(params) {
    * @route /
    * @method POST
    * @description Create a Record in database
-   * @param {json} req
-   * @param {json} res
    */
   exports.createOne = async (req, res) => {
     let _insert = req.body;
@@ -73,8 +71,6 @@ export function buildContent(params) {
    * @route /:id
    * @method GET
    * @description Get a Record by id
-   * @param {json} req
-   * @param {json} res
    */
   exports.getOne = async (req, res) => {
     try {
@@ -117,9 +113,7 @@ export function buildContent(params) {
   /**
    * @route /:id
    * @method PUT
-   * @description Update the Record in the database by id
-   * @param {json} req
-   * @param {json} res
+   * @description Update a Record by id
    */
   exports.updateOne = async (req, res) => {
     try {
@@ -154,9 +148,7 @@ export function buildContent(params) {
   /**
    * @route /:id
    * @method DELETE
-   * @description Delete the record from the database by id
-   * @param {json} req
-   * @param {json} res
+   * @description Delete a record by id
    */
   exports.deleteOne = async (req, res) => {
     try {
@@ -194,8 +186,6 @@ export function buildContent(params) {
    * @route /
    * @method GET
    * @description Get all the records
-   * @param {json} req
-   * @param {json} res
    */
   exports.getAll = async (req, res) => {
 
@@ -233,7 +223,16 @@ export function buildContent(params) {
     } catch(err) {
       res.send({
         errors: [
-          err
+          {
+            title: "Failed to get Records",
+            meta: {
+              name: err.nativeError ? err.nativeError.name: null,
+              nativeError: {
+                code: err.nativeError ? err.nativeError.code: null,
+                sqlMessage: err.nativeError ? err.nativeError.sqlMessage: null,
+              }
+            }
+          }
         ]
       }) 
     }
