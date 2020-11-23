@@ -36,7 +36,6 @@ export const updatePackageDotJsonFile = async () => {
     console.log("knex Version:", version);
     file.set("dependencies.knex", "^" + version);
     file.save();
-    console.log(file);
   });
   //   objection js
   npmview("objection", function (err, version, moduleInfo) {

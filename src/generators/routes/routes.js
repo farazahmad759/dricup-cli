@@ -1,4 +1,5 @@
 import fs from "fs";
+import { getRelativePath, readEcagConfigFile } from "./../../utils/functions";
 var pluralize = require("pluralize");
 
 export function buildContent(params) {
@@ -6,8 +7,14 @@ export function buildContent(params) {
   let modelName = pluralize.singular(jsonData.tableName);
   modelName = capitalizeFirstLetter(modelName);
   let c_content = {};
+  let dvCrudConfig = readEcagConfigFile();
+  let controllerFilePath = getRelativePath(
+    dvCrudConfig.controllers_path,
+    dvCrudConfig.routes_path + jsonData.tableName + "/"
+  );
+
   c_content.imports = `
-  var controller = require('./../db/controllers/${jsonData.tableName}');
+  var controller = require('${controllerFilePath}controllers/${jsonData.tableName}');
   var express = require('express');
   var router = express.Router();`;
 

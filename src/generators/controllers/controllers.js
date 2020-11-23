@@ -1,4 +1,5 @@
 import fs from "fs";
+import { getRelativePath, readEcagConfigFile } from "./../../utils/functions";
 var pluralize = require("pluralize");
 
 export function buildContent(params) {
@@ -6,8 +7,14 @@ export function buildContent(params) {
   let modelName = pluralize.singular(jsonData.tableName);
   modelName = capitalizeFirstLetter(modelName);
   let c_content = {};
+  let dvCrudConfig = readEcagConfigFile();
+  let modelsDirectoryPath = getRelativePath(
+    dvCrudConfig.models_path,
+    dvCrudConfig.controllers_path + jsonData.tableName
+  );
+
   c_content.imports = `
-  const models = require('../models/index.js');
+  const models = require('${modelsDirectoryPath}models/index.js');
   const dbModel = models.${modelName};
   const modelName = '${modelName}';`;
 
