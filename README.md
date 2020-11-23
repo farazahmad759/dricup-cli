@@ -12,7 +12,7 @@ You get CRUD APIs in three simple steps.
 ## Step 1
 Install the package globally using 
 ```
-npm install dricup-crud-express -g
+npm install @farazahmad759/dricup-crud-express -g
 ```
 ## Step 2
 Navigate to your Express project's root directory, and create *schemas* directory in `<project_root>/db` directory. It is the `<project_root>/db/schemas` directory where you will create `.json` schema files.

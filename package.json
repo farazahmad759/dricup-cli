@@ -1,6 +1,6 @@
 {
   "name": "@farazahmad759/dricup-crud-express",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A CLI to bootstrap my new projects",
   "main": "src/index.js",
   "bin": {
@@ -11,7 +11,9 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "git:feature-#1-to-v0.0.1": "git checkout v0.0.1 && git merge feature-#1 && git push origin v0.0.1 && git checkout feature-#1"
+    "git:promote-feature-to-development": "git checkout development && git merge feature && git push origin development && git checkout feature",
+    "git:promote-development-to-main": "git checkout main && git merge development && git push origin main && git checkout feature",
+    "git:promote-main-to-v0.1": "git checkout v0.1 && git merge main && git push origin v0.1 && git checkout feature"
   },
   "keywords": [
     "cli",
