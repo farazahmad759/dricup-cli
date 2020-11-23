@@ -6,5 +6,7 @@
   "models_path": "db/models/",
   "controllers_path": "db/controllers/",
   "views_path": "db/views/",
-  "routes_path": "routes/"
+  "routes_path": "routes/",
+  "YOUR_COMPANY_NAME": "StudyApps",
+  "JSON_API_VERSION": "1.0"
 }

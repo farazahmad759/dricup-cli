@@ -1,13 +1,13 @@
 import fs from "fs";
 import { getRelativePath, readEcagConfigFile } from "./../../utils/functions";
 var pluralize = require("pluralize");
+let dvCrudConfig = readEcagConfigFile();
 
 export function buildContent(params) {
   let { jsonData } = params;
   let modelName = pluralize.singular(jsonData.tableName);
   modelName = capitalizeFirstLetter(modelName);
   let c_content = {};
-  let dvCrudConfig = readEcagConfigFile();
   let modelsDirectoryPath = getRelativePath(
     dvCrudConfig.models_path,
     dvCrudConfig.controllers_path + jsonData.tableName
@@ -35,12 +35,31 @@ export function buildContent(params) {
     try {
       let _res = await dbModel.query().insert(_insert);
       res.send({
-        message: "Record created successfully",
-        data: _res
-      })
+        links: {
+          self: req.originalUrl
+        },
+        "meta": {
+          "copyright": "Copyright 2020 ${dvCrudConfig.YOUR_COMPANY_NAME}.",
+        },
+        data: _res ? _res : null,
+        "jsonapi": {
+          "version": "${dvCrudConfig.JSON_API_VERSION}"
+        }
+    })
     } catch (err) {
       res.send({
-        error: err
+        errors: [
+          {
+            title: "Error occurred while adding a Record in the database.",
+            meta: {
+              name: err.nativeError ? err.nativeError.name: null,
+              nativeError: {
+                code: err.nativeError ? err.nativeError.code: null,
+                sqlMessage: err.nativeError ? err.nativeError.sqlMessage: null,
+              }
+            }
+          }
+        ]
       })
     }
   };`;
@@ -61,12 +80,31 @@ export function buildContent(params) {
     try {
       let _res = await dbModel.query().findById(req.params.id);
       res.send({
-        message: "Record found successfully",
-        data: _res
-      });
+        links: {
+          self: req.originalUrl
+        },
+        "meta": {
+          "copyright": "Copyright 2020 ${dvCrudConfig.YOUR_COMPANY_NAME}.",
+        },
+        data: _res ? _res : null,
+        "jsonapi": {
+          "version": "${dvCrudConfig.JSON_API_VERSION}"
+        }
+    });
     } catch(err) {
       res.send({
-        error: err
+        errors: [
+          {
+            title: "Failed to get a Record with id = " + req.params.id,
+            meta: {
+              name: err.nativeError ? err.nativeError.name: null,
+              nativeError: {
+                code: err.nativeError ? err.nativeError.code: null,
+                sqlMessage: err.nativeError ? err.nativeError.sqlMessage: null,
+              }
+            }
+          }
+        ]
       });  
     }
   };`;
@@ -86,14 +124,24 @@ export function buildContent(params) {
   exports.updateOne = async (req, res) => {
     try {
       let _insert = req.body;
-      let _res = await dbModel.query().findById(req.params.id).patch(_insert);
+      let _res = await dbModel.query().patchAndFetchById(req.params.id, _insert);
       res.send({
-        message: "Record updated successfully",
-        data: _res
+        data: _res ? _res : null
       });  
     } catch(err) {
       res.send({
-        error: err
+        errors: [
+          {
+            title: "Failed to update the Record with id = " + req.params.id,
+            meta: {
+              name: err.nativeError ? err.nativeError.name: null,
+              nativeError: {
+                code: err.nativeError ? err.nativeError.code: null,
+                sqlMessage: err.nativeError ? err.nativeError.sqlMessage: null,
+              }
+            }
+          }
+        ]
       });  
     }
   };`;
@@ -114,12 +162,24 @@ export function buildContent(params) {
     try {
       let _res = await dbModel.query().deleteById(req.params.id);
       res.send({
-        message: "Record deleted successfully",
-        data: _res
+        data: {
+          id: _res ? req.params.id : null
+        }
       });  
     } catch(err) {
       res.send({
-        error: err
+        errors: [
+          {
+            title: "Failed to delete the Record with id = " + req.params.id,
+            meta: {
+              name: err.nativeError ? err.nativeError.name: null,
+              nativeError: {
+                code: err.nativeError ? err.nativeError.code: null,
+                sqlMessage: err.nativeError ? err.nativeError.sqlMessage: null,
+              }
+            }
+          }
+        ]
       });  
     }
   };
@@ -159,13 +219,22 @@ export function buildContent(params) {
       
         // return response
         res.send({
-          message: "Your searched fetched the following results",
-          data: _res
-        })    
+          links: {
+            self: req.originalUrl
+          },
+          "meta": {
+            "copyright": "Copyright 2020 ${dvCrudConfig.YOUR_COMPANY_NAME}.",
+          },
+          data: _res,
+          "jsonapi": {
+            "version": "${dvCrudConfig.JSON_API_VERSION}"
+          }
+        });
     } catch(err) {
       res.send({
-        errorMessage: "Error occurred",
-        error: err
+        errors: [
+          err
+        ]
       }) 
     }
   };`;
