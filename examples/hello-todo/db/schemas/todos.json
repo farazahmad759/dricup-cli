@@ -1,0 +1,17 @@
+{
+  "tableName": "todos",
+  "fields": [
+    {
+      "title": "title",
+      "type": "string"
+    },
+    {
+      "title": "type",
+      "type": "string"
+    },
+    {
+      "title": "status",
+      "type": "string"
+    }
+  ]
+}
