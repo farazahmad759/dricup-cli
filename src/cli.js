@@ -5,6 +5,7 @@ import dvGenerators from "./generators/index";
 import { readEcagConfigFile } from "./utils/functions";
 var fs = require("fs");
 var dvCrudConfig = readEcagConfigFile();
+var pluralize = require("pluralize");
 function parseArgumentsIntoOptions(rawArgs) {
   const args = arg(
     {
@@ -110,7 +111,8 @@ export async function cli(args) {
   });
 
   // console.log(jsonFullContents[0].controller);
-
+  let content_models_index_js = ``;
+  let modelNamesObj = {};
   // #3 create files
   jsonFullContents.forEach((_content) => {
     console.log("=======", _content.schema.tableName);
@@ -136,23 +138,11 @@ export async function cli(args) {
       extension: ".js",
       _jsonData: {},
     });
-    fs.writeFile(
-      "db/models/index.js",
-      `
-      var User = require('./users')
-      let models = {
-        User
-      }
-      module.exports = models;
-      `,
-      function (err) {
-        if (err) {
-          console.log(err);
-        } else {
-          console.log("db/models/index.js" + " has been created");
-        }
-      }
-    );
+    // models/index.js
+    let modelName = pluralize.singular(_content.schema.tableName);
+    modelName = capitalizeFirstLetter(modelName);
+    content_models_index_js += `\nvar ${modelName} = require('./${_content.schema.tableName}')`;
+    modelNamesObj[modelName] = modelName;
     // controller files
     createFile({
       name: _content.schema.tableName,
@@ -178,6 +168,25 @@ export async function cli(args) {
 
     // view files
   });
+
+  console.log("========== modelNamesObject =======", modelNamesObj);
+  fs.writeFile(
+    "db/models/index.js",
+    `
+    ${content_models_index_js}
+    let models = {
+      ${Object.keys(modelNamesObj)}
+    }
+    module.exports = models;
+    `,
+    function (err) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("db/models/index.js" + " has been created");
+      }
+    }
+  );
 }
 
 // helper functions
@@ -247,10 +256,7 @@ const createFile = (params) => {
   }
   let formattedName = "";
   formattedName += timeStamp + "_" + preName + "_" + name + "_" + postName;
-  formattedName = formattedName.replace("__", "_");
-  formattedName = formattedName.replace("__", "_");
-  formattedName = formattedName.replace("__", "_");
-  formattedName = formattedName.replace("__", "_");
+  formattedName = formattedName.replace(/_{2}/g, "_");
   if (formattedName.charAt(0) === "_") {
     formattedName = formattedName.substring(1);
   }
@@ -262,7 +268,11 @@ const createFile = (params) => {
     if (err) {
       console.log(err);
     } else {
-      console.log(formattedName + " has beend created");
+      console.log(formattedName + " has been created");
     }
   });
 };
+
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}

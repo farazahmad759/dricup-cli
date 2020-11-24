@@ -24,7 +24,7 @@ export function buildContent(params) {
       return '${jsonData.tableName}';
     }
   }
-  module.exports = User;
+  module.exports = ${modelName};
   `;
 
   let _ret = ``;
