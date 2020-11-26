@@ -36,6 +36,7 @@
     "edit-json-file": "^1.5.0",
     "esm": "^3.2.18",
     "execa": "^4.1.0",
+    "get-installed-path": "^4.0.8",
     "inquirer": "^7.3.3",
     "listr": "^0.14.3",
     "ncp": "^2.0.0",

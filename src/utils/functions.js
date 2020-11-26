@@ -12,13 +12,22 @@ export const getRelativePath = (referencePath, otherPath) => {
   console.log("==================", relativePath); //'../../img'
   return relativePath;
 };
+const { getInstalledPathSync } = require("get-installed-path");
 
-export const readEcagConfigFile = () => {
+export const readEcagConfigFile = (templateDir) => {
   let filePath = process.cwd() + "/ecag.config.json";
   var dvCrudConfig = {};
   // TODO if ecag.config.json not exists in cwd(), then create one
   if (fs.existsSync(filePath)) {
     dvCrudConfig = JSON.parse(fs.readFileSync(filePath, "utf8"));
+  } else if (templateDir) {
+    const packagePath = getInstalledPathSync(
+      "@farazahmad759/dricup-crud-express"
+    );
+    dvCrudConfig = JSON.parse(
+      fs.readFileSync(packagePath + "/templates/ecag.config.json", "utf8")
+    );
+    // console.log(" ===== options object", templateDir);
   }
   return dvCrudConfig;
 };
