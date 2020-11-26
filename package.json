@@ -1,6 +1,6 @@
 {
   "name": "@farazahmad759/dricup-crud-express",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "A CLI to quickly create Express JS Api's",
   "main": "src/cli.js",
   "bin": {
