@@ -22,11 +22,28 @@ async function copyTemplateFiles(options) {
 }
 
 async function createDirectoriesIfNotExist(options) {
-  let migrationsDirectory = options.targetDirectory + "/db/migrations";
-  let modelsDirectory = options.targetDirectory + "/db/models";
-  let controllersDirectory = options.targetDirectory + "/db/controllers";
+  let dbDirectory = options.targetDirectory + "/db";
+  if (
+    dvCrudConfig.migrations_path.includes("server") ||
+    dvCrudConfig.models_path.includes("server") ||
+    dvCrudConfig.controllers_path.includes("server")
+  ) {
+    if (!fs.existsSync("server")) {
+      fs.mkdirSync("server");
+    }
+    if (!fs.existsSync("server/db")) {
+      fs.mkdirSync("server/db");
+    }
+  }
+  let migrationsDirectory =
+    options.targetDirectory + "/" + dvCrudConfig.migrations_path;
+  let modelsDirectory =
+    options.targetDirectory + "/" + dvCrudConfig.models_path;
+  let controllersDirectory =
+    options.targetDirectory + "/" + dvCrudConfig.controllers_path;
   if (!fs.existsSync(migrationsDirectory)) {
     fs.mkdirSync(migrationsDirectory);
+    console.log("==================== migDirectory created");
   }
   if (!fs.existsSync(modelsDirectory)) {
     fs.mkdirSync(modelsDirectory);
@@ -37,7 +54,8 @@ async function createDirectoriesIfNotExist(options) {
 }
 
 async function readSchemaFiles(options, jsonFullContents) {
-  let schemaDirectory = options.targetDirectory + "/db/schemas";
+  let schemaDirectory =
+    options.targetDirectory + "/" + dvCrudConfig.schemas_path;
   fs.readdirSync(schemaDirectory).forEach((file, i) => {
     var obj = JSON.parse(fs.readFileSync(schemaDirectory + "/" + file, "utf8"));
     jsonFullContents.push({});
@@ -195,8 +213,16 @@ export async function createProject(options) {
       task: () => updatePackageDotJsonFile(),
     },
     {
+      title: "Create ecag.config.json if not present",
+      task: () => {
+        dvCrudConfig = readEcagConfigFile(options.templateDir);
+      },
+    },
+    {
       title: "Create necessary directories",
-      task: () => createDirectoriesIfNotExist(options),
+      task: () => {
+        createDirectoriesIfNotExist(options);
+      },
     },
     {
       title: "Copy project files",
@@ -214,7 +240,7 @@ export async function createProject(options) {
       task: () => generateContentFromSchemaFiles(options, jsonFullContents),
     },
     {
-      title: "Create fiels from content",
+      title: "Create files from content",
       task: () => createFilesFromContent(options, jsonFullContents),
     },
     {
@@ -294,6 +320,14 @@ const createFile = (params) => {
     dir += dvCrudConfig.views_path;
   }
 
+  if (dir.includes("server")) {
+    if (!fs.existsSync("server")) {
+      fs.mkdirSync("server");
+    }
+    if (!fs.existsSync("server/db")) {
+      fs.mkdirSync("server/db");
+    }
+  }
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir);
   }

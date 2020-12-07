@@ -20,15 +20,19 @@ export const readEcagConfigFile = (templateDir) => {
   // TODO if ecag.config.json not exists in cwd(), then create one
   if (fs.existsSync(filePath)) {
     dvCrudConfig = JSON.parse(fs.readFileSync(filePath, "utf8"));
-  } else if (templateDir) {
+  } else {
     const packagePath = getInstalledPathSync(
       "@farazahmad759/dricup-crud-express"
     );
     dvCrudConfig = JSON.parse(
       fs.readFileSync(packagePath + "/templates/ecag.config.json", "utf8")
     );
-    // console.log(" ===== options object", templateDir);
   }
+  console.log(
+    " ========== dvCrudConfig options object",
+    dvCrudConfig,
+    templateDir
+  );
   return dvCrudConfig;
 };
 
