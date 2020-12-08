@@ -1,6 +1,11 @@
 import fs from "fs";
 import path from "path";
+import { promisify } from "util";
+import ncp from "ncp";
+
 var dvCrudConfig = {};
+const copy = promisify(ncp);
+
 export const getRelativePath = (referencePath, otherPath) => {
   let relativePath = path.relative(
     path.dirname(process.cwd() + "/" + otherPath),
@@ -104,6 +109,22 @@ export async function createDirectoriesIfNotExist(options) {
   if (!fs.existsSync(controllersDirectory)) {
     fs.mkdirSync(controllersDirectory);
   }
+}
+
+export async function readSchemaFiles(options, jsonFullContents) {
+  let schemaDirectory =
+    options.targetDirectory + "/" + dvCrudConfig.schemas_path;
+  fs.readdirSync(schemaDirectory).forEach((file, i) => {
+    var obj = JSON.parse(fs.readFileSync(schemaDirectory + "/" + file, "utf8"));
+    jsonFullContents.push({});
+    jsonFullContents[i].schema = obj;
+  });
+}
+
+export async function copyTemplateFiles(options) {
+  return copy(options.templateDirectory, options.targetDirectory, {
+    clobber: false,
+  });
 }
 
 export { dvCrudConfig };

@@ -1,6 +1,5 @@
 import chalk from "chalk";
 import fs from "fs";
-import ncp from "ncp";
 import path from "path";
 import { promisify } from "util";
 import execa from "execa";
@@ -12,28 +11,13 @@ import {
   createDirectoriesIfNotExist,
   readEcagConfigFile,
   dvCrudConfig,
+  readSchemaFiles,
+  copyTemplateFiles,
 } from "./utils/functions";
 import dvGenerators from "./generators/index";
 var pluralize = require("pluralize");
 
 const access = promisify(fs.access);
-const copy = promisify(ncp);
-
-async function copyTemplateFiles(options) {
-  return copy(options.templateDirectory, options.targetDirectory, {
-    clobber: false,
-  });
-}
-
-async function readSchemaFiles(options, jsonFullContents) {
-  let schemaDirectory =
-    options.targetDirectory + "/" + dvCrudConfig.schemas_path;
-  fs.readdirSync(schemaDirectory).forEach((file, i) => {
-    var obj = JSON.parse(fs.readFileSync(schemaDirectory + "/" + file, "utf8"));
-    jsonFullContents.push({});
-    jsonFullContents[i].schema = obj;
-  });
-}
 
 async function generateContentFromSchemaFiles(options, jsonFullContents) {
   jsonFullContents.forEach((_content, i) => {
