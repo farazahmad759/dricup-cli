@@ -8,8 +8,8 @@ function parseArgumentsIntoOptions(rawArgs) {
       "--git": Boolean,
       "--yes": Boolean,
       "--install": Boolean,
-      "--project:generate": Boolean,
-      "--crud:generate": Boolean,
+      "--create:project": Boolean,
+      "--create:crud": Boolean,
       "--all": Boolean,
       "--force": Boolean,
       "-g": "--git",
@@ -21,13 +21,14 @@ function parseArgumentsIntoOptions(rawArgs) {
       argv: rawArgs.slice(2),
     }
   );
+  console.log(args);
   return {
     skipPrompts: args["--yes"] || false,
     git: args["--git"] || false,
     template: args._[0],
     runInstall: args["--install"] || false,
-    projectGenerate: args["--project:generate"] || false,
-    crudGenerate: args["--crud:generate"] || false,
+    createProject: args["--create:project"] || false,
+    createCRUD: args["--create:crud"] || false,
     all: args["--all"] || false,
     // rawArgs: rawArgs.slice(2),
   };
@@ -79,34 +80,35 @@ export async function cli(args) {
 
   // #0 copy files
   console.log("args", options);
-  if (options.projectGenerate) {
+  if (options.createProject) {
     createProject(options);
-    console.log("--project:generate");
-  } else if (options.crudGenerate) {
+    console.log("--create:project");
+  } else if (options.createCRUD) {
     createCRUD(options);
     if (options.all) {
       if (options.force) {
         // createCRUD(options);
       }
-      console.log("--crud:generate --all");
+      console.log("--create:crud --all");
     } else {
       // first check if files already exist
       // createCRUD(options);
       process.argv.shift(); // skip node directory
       process.argv.shift(); // skip directory
-      process.argv.shift(); // skip --crud:generate
+      process.argv.shift(); // skip --create:crud
       console.log(process.argv.join(" "));
-      console.log("--crud:generate file");
+      console.log("--create:crud file");
     }
   }
 }
 
 /**
  * COMMANDS
+ * dricup --init (will setup dricup.config.js and dricup/schemas/users.json)
  * dricup --yes
  * dricup --git
- * dricup --project:generate
- * dricup --crud:generate -all -force
- * dricup --crud:generate <file_name>
+ * dricup --create:project template="hello"
+ * dricup --create:crud -all -force
+ * dricup --create:crud <file_name>
  *
  */
