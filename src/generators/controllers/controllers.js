@@ -1,10 +1,10 @@
 import fs from "fs";
-import { getRelativePath, readEcagConfigFile } from "./../../utils/functions";
+import { getRelativePath, readEcagConfigFile } from "./../../utils/helpers";
 var pluralize = require("pluralize");
-let dvCrudConfig = readEcagConfigFile();
+// let dvCrudConfig = readEcagConfigFile();
 
 export function buildContent(params) {
-  let { jsonData } = params;
+  let { jsonData, dvCrudConfig } = params;
   let modelName = pluralize.singular(jsonData.tableName);
   modelName = capitalizeFirstLetter(modelName);
   let c_content = {};

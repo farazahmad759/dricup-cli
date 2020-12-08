@@ -1,5 +1,5 @@
 import fs from "fs";
-import { getRelativePath, readEcagConfigFile } from "./../../utils/functions";
+import { getRelativePath, readEcagConfigFile } from "./../../utils/helpers";
 var pluralize = require("pluralize");
 
 export function buildContent(params) {
