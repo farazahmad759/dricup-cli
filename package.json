@@ -1,10 +1,10 @@
 {
-  "name": "@farazahmad759/dricup-crud-express",
+  "name": "@dricup/dricup-cli",
   "version": "1.0.9",
   "description": "A CLI to quickly create Express JS Api's",
   "main": "src/cli.js",
   "bin": {
-    "dricup-crud-express": "bin/dricup-crud-express"
+    "dricup": "bin/dricup"
   },
   "publishConfig": {
     "access": "public"
@@ -17,11 +17,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/farazahmad759/dricup-crud-express.git"
+    "url": "https://github.com/farazahmad759/dricup-cli.git"
   },
   "keywords": [
-    "cli",
-    "dricup-crud-express"
+    "dricup",
+    "dricup-cli"
   ],
   "files": [
     "bin/",
