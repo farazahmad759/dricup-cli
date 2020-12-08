@@ -5,15 +5,15 @@ var knexConfig = {
     client: "mysql",
     connection: {
       host: "127.0.0.1",
-      database: "express-test-app",
+      database: "dricup_test",
       user: "root",
-      password: "password",
+      password: "",
     },
     migrations: {
-      directory: __dirname + "/db/migrations",
+      directory: __dirname + "/migrations",
     },
     seeds: {
-      directory: __dirname + "/db/seeds/development",
+      directory: __dirname + "/seeds/development",
     },
   },
   staging: {
@@ -32,10 +32,10 @@ var knexConfig = {
       tableName: "knex_migrations",
     },
     migrations: {
-      directory: __dirname + "/db/migrations",
+      directory: __dirname + "/migrations",
     },
     seeds: {
-      directory: __dirname + "/db/seeds/staging",
+      directory: __dirname + "/seeds/staging",
     },
   },
 
@@ -55,10 +55,10 @@ var knexConfig = {
       tableName: "knex_migrations",
     },
     migrations: {
-      directory: __dirname + "/db/migrations",
+      directory: __dirname + "/migrations",
     },
     seeds: {
-      directory: __dirname + "/db/seeds/production",
+      directory: __dirname + "/seeds/production",
     },
   },
 };

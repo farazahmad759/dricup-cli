@@ -149,7 +149,7 @@ async function createFilesFromContent(options, jsonFullContents) {
 
   console.log("========== modelNamesObject =======", modelNamesObj);
   fs.writeFile(
-    "db/models/index.js",
+    "models/index.js",
     `
     ${content_models_index_js}
     let models = {
@@ -161,7 +161,7 @@ async function createFilesFromContent(options, jsonFullContents) {
       if (err) {
         console.log(err);
       } else {
-        console.log("db/models/index.js" + " has been created");
+        console.log("models/index.js" + " has been created");
       }
     }
   );

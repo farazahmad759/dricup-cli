@@ -86,7 +86,7 @@ export async function cli(args) {
     createCRUD(options);
     if (options.all) {
       if (options.force) {
-        createCRUD(options);
+        // createCRUD(options);
       }
       console.log("--crud:generate --all");
     } else {
