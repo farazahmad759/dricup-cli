@@ -129,7 +129,7 @@ export async function cli(args) {
   } else if (options.createRoutes) {
     createRoutes(options, jsonFullContents);
   } else if (options.createCRUD) {
-    createCRUD(options);
+    createCRUD(options, jsonFullContents);
     // if (options.all) {
     //   if (options.force) {
     //     // createCRUD(options);

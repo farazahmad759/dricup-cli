@@ -202,17 +202,6 @@ export async function createControllers(options, jsonFullContents) {
       extension: ".js",
       _jsonData: _content.controller,
     });
-    // route files
-    createFile({
-      name: _content.schema.tableName,
-      type: "route",
-      content: _content.route,
-      dir: options.targetDirectory + "/",
-      preName: "",
-      postName: "",
-      extension: ".js",
-      _jsonData: _content.route,
-    });
   });
 }
 export async function createRoutes(options, jsonFullContents) {

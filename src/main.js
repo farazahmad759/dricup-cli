@@ -92,10 +92,61 @@ const createModels = async (options, jsonData) => {
   console.log("%s Models created", chalk.green.bold("DONE"));
   return true;
 };
-const createControllers = async (options, jsonData) => {};
-const createRoutes = async (options, jsonData) => {};
+const createControllers = async (options, jsonData) => {
+  const tasks = new Listr([
+    {
+      title: "Generating Controllers",
+      task: () => {
+        jsonData.forEach((_content) => {
+          createFile({
+            name: _content.schema.tableName,
+            type: "controller",
+            content: _content.controller,
+            dir: options.targetDirectory + "/",
+            preName: "",
+            postName: "",
+            extension: ".js",
+            _jsonData: _content.controller,
+          });
+        });
+      },
+    },
+  ]);
+
+  await tasks.run();
+  console.log("%s Controllers created", chalk.green.bold("DONE"));
+  return true;
+};
+const createRoutes = async (options, jsonData) => {
+  const tasks = new Listr([
+    {
+      title: "Generating Controllers",
+      task: () => {
+        jsonData.forEach((_content) => {
+          createFile({
+            name: _content.schema.tableName,
+            type: "route",
+            content: _content.route,
+            dir: options.targetDirectory + "/",
+            preName: "",
+            postName: "",
+            extension: ".js",
+            _jsonData: _content.route,
+          });
+        });
+      },
+    },
+  ]);
+
+  await tasks.run();
+  console.log("%s Controllers created", chalk.green.bold("DONE"));
+  return true;
+};
 const createCRUD = async (options, jsonData) => {
-  // createMigrations(options, []);
+  createMigrations(options, jsonData);
+  createModels(options, jsonData);
+  createControllers(options, jsonData);
+  createRoutes(options, jsonData);
 };
 const createProject = async (options, jsonData) => {};
 
