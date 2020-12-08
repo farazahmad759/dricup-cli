@@ -197,6 +197,43 @@ export async function createProject(options) {
     process.exit(1);
   }
 
+  const tasks = new Listr([
+    {
+      title: "Creating project files",
+      task: () => {
+        let _options = {
+          templateDirectory: options.templateDirectory + "/bootstrap",
+          targetDirectory: options.targetDirectory,
+        };
+        copyTemplateFiles(_options);
+      },
+    },
+  ]);
+
+  await tasks.run();
+  console.log("%s Project ready", chalk.green.bold("DONE"));
+  return true;
+}
+export async function createProjectOld(options) {
+  options = {
+    ...options,
+    targetDirectory: options.targetDirectory || process.cwd(),
+  };
+
+  const templateDir = path.resolve(
+    new URL(import.meta.url).pathname,
+    "../../templates",
+    ""
+  );
+  options.templateDirectory = templateDir;
+
+  try {
+    await access(templateDir, fs.constants.R_OK);
+  } catch (err) {
+    console.error("%s Invalid template name" + err, chalk.red.bold("ERROR"));
+    process.exit(1);
+  }
+
   // variable
   let jsonFullContents = [];
 
@@ -208,56 +245,99 @@ export async function createProject(options) {
   // create files into respective directories
   // install dependencies
   const tasks = new Listr([
-    {
-      title: "Update package.json",
-      task: () => updatePackageDotJsonFile(),
-    },
-    {
-      title: "Create dricup.config.json if not present",
-      task: () => {
-        dvCrudConfig = readEcagConfigFile(options.templateDir);
-      },
-    },
-    {
-      title: "Create necessary directories",
-      task: () => {
-        createDirectoriesIfNotExist(options);
-      },
-    },
+    // {
+    //   title: "Update package.json",
+    //   task: () => updatePackageDotJsonFile(),
+    // },
+    // {
+    //   title: "Create dricup.config.json if not present",
+    //   task: () => {
+    //     dvCrudConfig = readEcagConfigFile(options.templateDir);
+    //   },
+    // },
+    // {
+    //   title: "Create necessary directories",
+    //   task: () => {
+    //     createDirectoriesIfNotExist(options);
+    //   },
+    // },
     {
       title: "Copy project files",
       task: () => {
-        copyTemplateFiles(options);
+        let _dirs = {
+          templateDirectory: options.templateDirectory + "/bootstrap",
+          targetDirectory: options.targetDirectory,
+        };
+        copyTemplateFiles(_dirs);
         dvCrudConfig = readEcagConfigFile();
       },
     },
+    // {
+    //   title: "Read schema files",
+    //   task: () => readSchemaFiles(options, jsonFullContents),
+    // },
+    // {
+    //   title: "Generate content from schema files",
+    //   task: () => generateContentFromSchemaFiles(options, jsonFullContents),
+    // },
+    // {
+    //   title: "Create files from content",
+    //   task: () => createFilesFromContent(options, jsonFullContents),
+    // },
+    // {
+    //   title: "Initialize git",
+    //   task: () => initGit(options),
+    //   enabled: () => options.git,
+    // },
+    // {
+    //   title: "Install dependencies",
+    //   task: () =>
+    //     projectInstall({
+    //       cwd: options.targetDirectory,
+    //     }),
+    //   skip: () =>
+    //     !options.runInstall
+    //       ? "Pass --install to automatically install dependencies"
+    //       : undefined,
+    // },
+  ]);
+
+  await tasks.run();
+  console.log("%s Project ready", chalk.green.bold("DONE"));
+  return true;
+}
+export async function createCRUD(options) {
+  options = {
+    ...options,
+    targetDirectory: options.targetDirectory || process.cwd(),
+  };
+
+  const templateDir = path.resolve(
+    new URL(import.meta.url).pathname,
+    "../../templates",
+    ""
+  );
+  options.templateDirectory = templateDir;
+
+  try {
+    await access(templateDir, fs.constants.R_OK);
+  } catch (err) {
+    console.error("%s Invalid template name" + err, chalk.red.bold("ERROR"));
+    process.exit(1);
+  }
+
+  // variable
+  const tasks = new Listr([
     {
-      title: "Read schema files",
-      task: () => readSchemaFiles(options, jsonFullContents),
-    },
-    {
-      title: "Generate content from schema files",
-      task: () => generateContentFromSchemaFiles(options, jsonFullContents),
-    },
-    {
-      title: "Create files from content",
-      task: () => createFilesFromContent(options, jsonFullContents),
-    },
-    {
-      title: "Initialize git",
-      task: () => initGit(options),
-      enabled: () => options.git,
-    },
-    {
-      title: "Install dependencies",
-      task: () =>
-        projectInstall({
-          cwd: options.targetDirectory,
-        }),
-      skip: () =>
-        !options.runInstall
-          ? "Pass --install to automatically install dependencies"
-          : undefined,
+      title: "Copy project files",
+      task: () => {
+        let _dirs = {
+          templateDirectory: options.templateDirectory + "/bootstrap",
+          targetDirectory: options.targetDirectory,
+        };
+        copyTemplateFiles(_dirs);
+        dvCrudConfig = readEcagConfigFile();
+      },
     },
   ]);
 

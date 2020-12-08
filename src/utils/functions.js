@@ -26,11 +26,11 @@ export const readEcagConfigFile = (templateDir) => {
       fs.readFileSync(packagePath + "/templates/dricup.config.json", "utf8")
     );
   }
-  console.log(
-    " ========== dvCrudConfig options object",
-    dvCrudConfig,
-    templateDir
-  );
+  // console.log(
+  //   " ========== dvCrudConfig options object",
+  //   dvCrudConfig,
+  //   templateDir
+  // );
   return dvCrudConfig;
 };
 

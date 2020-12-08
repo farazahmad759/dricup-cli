@@ -1,6 +1,6 @@
 import arg from "arg";
 import inquirer from "inquirer";
-import { createProject } from "./main";
+import { createCRUD, createProject } from "./main";
 var fs = require("fs");
 function parseArgumentsIntoOptions(rawArgs) {
   const args = arg(
@@ -8,9 +8,14 @@ function parseArgumentsIntoOptions(rawArgs) {
       "--git": Boolean,
       "--yes": Boolean,
       "--install": Boolean,
+      "--project:generate": Boolean,
+      "--crud:generate": Boolean,
+      "--all": Boolean,
+      "--force": Boolean,
       "-g": "--git",
       "-y": "--yes",
       "-i": "--install",
+      "-a": "--all",
     },
     {
       argv: rawArgs.slice(2),
@@ -21,6 +26,9 @@ function parseArgumentsIntoOptions(rawArgs) {
     git: args["--git"] || false,
     template: args._[0],
     runInstall: args["--install"] || false,
+    projectGenerate: args["--project:generate"] || false,
+    crudGenerate: args["--crud:generate"] || false,
+    all: args["--all"] || false,
     // rawArgs: rawArgs.slice(2),
   };
 }
@@ -70,7 +78,34 @@ export async function cli(args) {
   };
 
   // #0 copy files
-  createProject(options);
+  console.log("args", options);
+  if (options.projectGenerate) {
+    createProject(options);
+    console.log("--project:generate");
+  } else if (options.crudGenerate) {
+    if (options.all) {
+      if (options.force) {
+        // createCRUD(options);
+      }
+      console.log("--crud:generate --all");
+    } else {
+      // first check if files already exist
+      // createCRUD(options);
+      process.argv.shift(); // skip node directory
+      process.argv.shift(); // skip directory
+      process.argv.shift(); // skip --crud:generate
+      console.log(process.argv.join(" "));
+      console.log("--crud:generate file");
+    }
+  }
 }
 
-// helper functions
+/**
+ * COMMANDS
+ * dricup --yes
+ * dricup --git
+ * dricup --project:generate
+ * dricup --crud:generate -all -force
+ * dricup --crud:generate <file_name>
+ *
+ */
