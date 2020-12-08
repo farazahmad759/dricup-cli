@@ -23,7 +23,7 @@ You get CRUD APIs in six simple steps.
 Install the package globally using
 
 ```
-npm install -g @farazahmad759/dricup-crud-express
+npm install -g @dricup/dricup-cli
 ```
 
 ## Step 2
@@ -99,7 +99,7 @@ db
 routes
 --- users.js
 knexfile.js
-ecag.config.json
+dricup.config.json
 ```
 
 ## Step 5
@@ -165,7 +165,7 @@ Now start your _Express_ App using `npm start`, and boom!!! your CRUD API is rea
 
 Feel free to modify any of the above methods according to your needs. You can even add more methods to your controllers if you want. `dricup-crud-express` provides you the boilerplate code for writing API's and thus saves so much of your precious time.
 
-- `ecag.config.json` file in the root of your project defines the paths where the files will be generated, which you can modify it as you want.
+- `dricup.config.json` file in the root of your project defines the paths where the files will be generated, which you can modify it as you want.
 
 # What is more?
 

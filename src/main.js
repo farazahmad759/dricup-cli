@@ -213,7 +213,7 @@ export async function createProject(options) {
       task: () => updatePackageDotJsonFile(),
     },
     {
-      title: "Create ecag.config.json if not present",
+      title: "Create dricup.config.json if not present",
       task: () => {
         dvCrudConfig = readEcagConfigFile(options.templateDir);
       },

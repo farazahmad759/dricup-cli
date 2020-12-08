@@ -1,0 +1,9 @@
+{
+  "tableName": "users",
+  "fields": [
+    {
+      "title": "name",
+      "type": "string"
+    }
+  ]
+}

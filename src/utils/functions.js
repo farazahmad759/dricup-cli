@@ -15,17 +15,15 @@ export const getRelativePath = (referencePath, otherPath) => {
 const { getInstalledPathSync } = require("get-installed-path");
 
 export const readEcagConfigFile = (templateDir) => {
-  let filePath = process.cwd() + "/ecag.config.json";
+  let filePath = process.cwd() + "/dricup.config.json";
   var dvCrudConfig = {};
-  // TODO if ecag.config.json not exists in cwd(), then create one
+  // TODO if dricup.config.json not exists in cwd(), then create one
   if (fs.existsSync(filePath)) {
     dvCrudConfig = JSON.parse(fs.readFileSync(filePath, "utf8"));
   } else {
-    const packagePath = getInstalledPathSync(
-      "@farazahmad759/dricup-crud-express"
-    );
+    const packagePath = getInstalledPathSync("@dricup/dricup-cli");
     dvCrudConfig = JSON.parse(
-      fs.readFileSync(packagePath + "/templates/ecag.config.json", "utf8")
+      fs.readFileSync(packagePath + "/templates/dricup.config.json", "utf8")
     );
   }
   console.log(
