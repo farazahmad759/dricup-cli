@@ -83,9 +83,10 @@ export async function cli(args) {
     createProject(options);
     console.log("--project:generate");
   } else if (options.crudGenerate) {
+    createCRUD(options);
     if (options.all) {
       if (options.force) {
-        // createCRUD(options);
+        createCRUD(options);
       }
       console.log("--crud:generate --all");
     } else {

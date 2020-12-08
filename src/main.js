@@ -214,7 +214,7 @@ export async function createProject(options) {
   console.log("%s Project ready", chalk.green.bold("DONE"));
   return true;
 }
-export async function createProjectOld(options) {
+export async function createCRUD(options) {
   options = {
     ...options,
     targetDirectory: options.targetDirectory || process.cwd(),
@@ -245,22 +245,22 @@ export async function createProjectOld(options) {
   // create files into respective directories
   // install dependencies
   const tasks = new Listr([
-    // {
-    //   title: "Update package.json",
-    //   task: () => updatePackageDotJsonFile(),
-    // },
-    // {
-    //   title: "Create dricup.config.json if not present",
-    //   task: () => {
-    //     dvCrudConfig = readEcagConfigFile(options.templateDir);
-    //   },
-    // },
-    // {
-    //   title: "Create necessary directories",
-    //   task: () => {
-    //     createDirectoriesIfNotExist(options);
-    //   },
-    // },
+    {
+      title: "Update package.json",
+      task: () => updatePackageDotJsonFile(),
+    },
+    {
+      title: "Create dricup.config.json if not present",
+      task: () => {
+        dvCrudConfig = readEcagConfigFile(options.templateDir);
+      },
+    },
+    {
+      title: "Create necessary directories",
+      task: () => {
+        createDirectoriesIfNotExist(options);
+      },
+    },
     {
       title: "Copy project files",
       task: () => {
@@ -272,41 +272,41 @@ export async function createProjectOld(options) {
         dvCrudConfig = readEcagConfigFile();
       },
     },
-    // {
-    //   title: "Read schema files",
-    //   task: () => readSchemaFiles(options, jsonFullContents),
-    // },
-    // {
-    //   title: "Generate content from schema files",
-    //   task: () => generateContentFromSchemaFiles(options, jsonFullContents),
-    // },
-    // {
-    //   title: "Create files from content",
-    //   task: () => createFilesFromContent(options, jsonFullContents),
-    // },
-    // {
-    //   title: "Initialize git",
-    //   task: () => initGit(options),
-    //   enabled: () => options.git,
-    // },
-    // {
-    //   title: "Install dependencies",
-    //   task: () =>
-    //     projectInstall({
-    //       cwd: options.targetDirectory,
-    //     }),
-    //   skip: () =>
-    //     !options.runInstall
-    //       ? "Pass --install to automatically install dependencies"
-    //       : undefined,
-    // },
+    {
+      title: "Read schema files",
+      task: () => readSchemaFiles(options, jsonFullContents),
+    },
+    {
+      title: "Generate content from schema files",
+      task: () => generateContentFromSchemaFiles(options, jsonFullContents),
+    },
+    {
+      title: "Create files from content",
+      task: () => createFilesFromContent(options, jsonFullContents),
+    },
+    {
+      title: "Initialize git",
+      task: () => initGit(options),
+      enabled: () => options.git,
+    },
+    {
+      title: "Install dependencies",
+      task: () =>
+        projectInstall({
+          cwd: options.targetDirectory,
+        }),
+      skip: () =>
+        !options.runInstall
+          ? "Pass --install to automatically install dependencies"
+          : undefined,
+    },
   ]);
 
   await tasks.run();
   console.log("%s Project ready", chalk.green.bold("DONE"));
   return true;
 }
-export async function createCRUD(options) {
+export async function createCRUDNew(options) {
   options = {
     ...options,
     targetDirectory: options.targetDirectory || process.cwd(),

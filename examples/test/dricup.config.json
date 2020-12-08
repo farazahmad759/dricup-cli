@@ -12,11 +12,11 @@
     "views": "views/",
     "routes": "routes/"
   },
-  "schemas_path": "db/schemas/",
+  "schemas_path": "dricup/schemas/",
   "knexfile_path": "knexfile.js/",
-  "migrations_path": "db/migrations/",
-  "models_path": "db/models/",
-  "controllers_path": "db/controllers/",
-  "views_path": "db/views/",
+  "migrations_path": "migrations/",
+  "models_path": "models/",
+  "controllers_path": "controllers/",
+  "views_path": "views/",
   "routes_path": "routes/"
 }
