@@ -6,10 +6,14 @@ import { promisify } from "util";
 import execa from "execa";
 import Listr from "listr";
 import { projectInstall } from "pkg-install";
-import { updatePackageDotJsonFile } from "./utils/functions";
+import {
+  updatePackageDotJsonFile,
+  capitalizeFirstLetter,
+  createDirectoriesIfNotExist,
+  readEcagConfigFile,
+  dvCrudConfig,
+} from "./utils/functions";
 import dvGenerators from "./generators/index";
-import { readEcagConfigFile } from "./utils/functions";
-var dvCrudConfig = {};
 var pluralize = require("pluralize");
 
 const access = promisify(fs.access);
@@ -19,38 +23,6 @@ async function copyTemplateFiles(options) {
   return copy(options.templateDirectory, options.targetDirectory, {
     clobber: false,
   });
-}
-
-async function createDirectoriesIfNotExist(options) {
-  let dbDirectory = options.targetDirectory + "/db";
-  if (
-    dvCrudConfig.migrations_path.includes("server") ||
-    dvCrudConfig.models_path.includes("server") ||
-    dvCrudConfig.controllers_path.includes("server")
-  ) {
-    if (!fs.existsSync("server")) {
-      fs.mkdirSync("server");
-    }
-    if (!fs.existsSync("server/db")) {
-      fs.mkdirSync("server/db");
-    }
-  }
-  let migrationsDirectory =
-    options.targetDirectory + "/" + dvCrudConfig.migrations_path;
-  let modelsDirectory =
-    options.targetDirectory + "/" + dvCrudConfig.models_path;
-  let controllersDirectory =
-    options.targetDirectory + "/" + dvCrudConfig.controllers_path;
-  if (!fs.existsSync(migrationsDirectory)) {
-    fs.mkdirSync(migrationsDirectory);
-    console.log("==================== migDirectory created");
-  }
-  if (!fs.existsSync(modelsDirectory)) {
-    fs.mkdirSync(modelsDirectory);
-  }
-  if (!fs.existsSync(controllersDirectory)) {
-    fs.mkdirSync(controllersDirectory);
-  }
 }
 
 async function readSchemaFiles(options, jsonFullContents) {
@@ -147,7 +119,7 @@ async function createFilesFromContent(options, jsonFullContents) {
     // view files
   });
 
-  console.log("========== modelNamesObject =======", modelNamesObj);
+  // console.log("========== modelNamesObject =======", modelNamesObj);
   fs.writeFile(
     "models/index.js",
     `
@@ -429,7 +401,3 @@ const createFile = (params) => {
     }
   });
 };
-
-function capitalizeFirstLetter(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}

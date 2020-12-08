@@ -5,7 +5,7 @@ var knexConfig = {
     client: "mysql",
     connection: {
       host: "127.0.0.1",
-      database: "dricup_test",
+      database: "express-test-app",
       user: "root",
       password: "",
     },
