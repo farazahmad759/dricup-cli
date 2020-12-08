@@ -1,6 +1,6 @@
-# dricup-crud-express
+# Dricup-cli
 
-Create quick RESTful APIs using Express + Knex + Objection. A single command `dricup-crud-express` will generate
+Create quick RESTful APIs using Express + Knex + Objection. A single command `dricup` will generate
 
 - Migration files,
 - Model files,
@@ -77,7 +77,7 @@ Create schema file(s). A sample schema file for `users` SQL table is included be
 Run the following command
 
 ```
-dricup-crud-express
+dricup
 ```
 
 and then install _npm_ packages using
@@ -86,7 +86,7 @@ and then install _npm_ packages using
 npm install
 ```
 
-The `dricup-crud-express` command will generate the following files and directories.
+The `dricup` command will generate the following files and directories.
 
 ```
 db
@@ -141,7 +141,7 @@ app.use('/users', usersRouter);
 // even deliciuos code
 ```
 
-Now start your _Express_ App using `npm start`, and boom!!! your CRUD API is ready. `dricup-crud-express` provides the following _routes_
+Now start your _Express_ App using `npm start`, and boom!!! your CRUD API is ready. `dricup` provides the following _routes_
 
 - `POST` /users --- to create a new user
 - `GET` /users/:id --- to get a user by Id
@@ -151,11 +151,11 @@ Now start your _Express_ App using `npm start`, and boom!!! your CRUD API is rea
 
 # Capabilities
 
-- I have described the capabilities of the `dricup-crud-express` in
+- I have described the capabilities of the `dricup` in
   [Build a Todo App in less than 5 minutes](https://farazahmad759.medium.com/build-a-todo-app-in-less-than-5-minutes-in-node-express-ada63d7c54b9)
 
 - There is much more you can do with it. Visit the `db/` directory in your project root and explore the directories inside it, most notably the `db/controllers` directory.
-- Take a look at the `todos` controller file created by the package [here](https://github.com/farazahmad759/dricup-crud-express/blob/main/examples/hello-todo/db/controllers/todos.js). The controller file has five methods in it for CRUD operations.
+- Take a look at the `todos` controller file created by the package [here](https://github.com/farazahmad759/dricup-cli/blob/main/examples/hello-todo/db/controllers/todos.js). The controller file has five methods in it for CRUD operations.
 
   - createOne
   - getOne
@@ -163,7 +163,7 @@ Now start your _Express_ App using `npm start`, and boom!!! your CRUD API is rea
   - deleteOne
   - getAll
 
-Feel free to modify any of the above methods according to your needs. You can even add more methods to your controllers if you want. `dricup-crud-express` provides you the boilerplate code for writing API's and thus saves so much of your precious time.
+Feel free to modify any of the above methods according to your needs. You can even add more methods to your controllers if you want. `dricup-cli` provides you the boilerplate code for writing API's and thus saves so much of your precious time.
 
 - `dricup.config.json` file in the root of your project defines the paths where the files will be generated, which you can modify it as you want.
 
