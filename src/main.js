@@ -247,13 +247,16 @@ const createFrontend = async (options) => {
         `;
         directories.forEach((dir) => {
           _clientJsContent += `
+          /**
+           * APP ${dir}
+           */
           if (process.env.NODE_ENV === "production") {
             app.use(
-              express.static(path.join(__dirname, "./client/${dir}/build"))
+              express.static(path.join(__dirname, "/${dir}/build"))
             );
             app.get("/${dir}", function (req, res) {
               res.sendFile(
-                path.join(__dirname, "./client/${dir}/build", "index.html")
+                path.join(__dirname, "/${dir}/build", "index.html")
               );
             });
           }
@@ -261,18 +264,21 @@ const createFrontend = async (options) => {
             app.get("/${dir}", function (req, res) {`;
 
           if (options.framework === "static") {
-            _clientJsContent += `app.get("/${dir}", function (req, res) {
+            _clientJsContent += `
                   res.sendFile(
-                    path.join(__dirname, "./client/${dir}/build", "index.html")
+                    path.join(__dirname, "/${dir}/build", "index.html")
                   );
-                });`;
+                });
+              }`;
           } else {
-            _clientJsContent += `res.send({
+            _clientJsContent += `
+            res.send({
                   message: "Running development environment",
-                });`;
+                });
+              });
+            }
+            `;
           }
-          _clientJsContent += `});
-          }`;
         });
         _clientJsContent += `
           }
