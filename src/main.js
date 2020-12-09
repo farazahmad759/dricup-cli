@@ -163,10 +163,6 @@ const _createModels = async (options, jsonData) => {
         extension: ".js",
         _jsonData: {},
       });
-      let modelName = pluralize.singular(_content.schema.tableName);
-      modelName = capitalizeFirstLetter(modelName);
-      content_models_index_js += `\nvar ${modelName} = require('./${_content.schema.tableName}')`;
-      modelNamesObj[modelName] = modelName;
     } else if (options.file && options.file === _content.fileName) {
       createFile({
         name: _content.schema.tableName,
@@ -178,11 +174,11 @@ const _createModels = async (options, jsonData) => {
         extension: ".js",
         _jsonData: {},
       });
-      let modelName = pluralize.singular(_content.schema.tableName);
-      modelName = capitalizeFirstLetter(modelName);
-      content_models_index_js += `\nvar ${modelName} = require('./${_content.schema.tableName}')`;
-      modelNamesObj[modelName] = modelName;
     }
+    let modelName = pluralize.singular(_content.schema.tableName);
+    modelName = capitalizeFirstLetter(modelName);
+    content_models_index_js += `\nvar ${modelName} = require('./${_content.schema.tableName}')`;
+    modelNamesObj[modelName] = modelName;
   });
   fs.writeFile(
     "models/index.js",
@@ -230,6 +226,8 @@ const _createControllers = async (options, jsonData) => {
   });
 };
 const _createRoutes = async (options, jsonData) => {
+  let content_models_index_js = ``;
+  let modelNamesObj = {};
   jsonData.forEach((_content) => {
     if (options.all) {
       createFile({
@@ -254,10 +252,33 @@ const _createRoutes = async (options, jsonData) => {
         _jsonData: _content.route,
       });
     }
+    let modelName = _content.schema.tableName + "Router";
+    content_models_index_js += `\nvar ${modelName} = require('./${_content.schema.tableName}')`;
+    modelNamesObj[modelName] = modelName;
   });
   let _options = {
     templateDirectory: options.templateDirectory + "/bootstrap/routes",
     targetDirectory: options.targetDirectory + "/routes",
   };
   copyTemplateFiles(_options);
+  let modelName = "indexRouter";
+  content_models_index_js += `\nvar ${modelName} = require('./index')`;
+  modelNamesObj[modelName] = modelName;
+  fs.writeFile(
+    "routes/routes.js",
+    `
+    ${content_models_index_js}
+    let models = {
+      ${Object.keys(modelNamesObj)}
+    }
+    module.exports = models;
+    `,
+    function (err) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("models/index.js" + " has been created");
+      }
+    }
+  );
 };
