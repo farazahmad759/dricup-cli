@@ -9,6 +9,12 @@ function register(app) {
       // });
       res.sendFile(path.join(__dirname, "../client/app-1/build", "index.html"));
     });
+  } else {
+    app.get("/app-1", function (req, res) {
+      res.send({
+        message: "Running development environment",
+      });
+    });
   }
 }
 

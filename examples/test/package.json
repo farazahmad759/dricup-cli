@@ -4,14 +4,24 @@
   "private": true,
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "nodemon index.js",
+    "client": "cd client/apps/app-1 && npm run start",
+    "build": "cd client/apps/app-1 && npm install && npm run build",
+    "mig:up-all": "i=0; while [ $i -le 5 ]; do knex migrate:up; i=$((i+1)); done",
+    "mig:down-all": "i=0; while [ $i -le 5 ]; do knex migrate:down; i=$((i+1)); done",
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+    "git:merge-dev-into-main": "git checkout main && git merge dev && git push origin && git checkout dev",
+    "git:merge-main-into-v1": "git checkout v1 && git merge main && git push origin && git checkout dev",
+    "git:merge-v1-into-prod": "git checkout prod && git merge v1 && git push origin && git checkout dev",
+    "git:dev-into-v1-danger": "npm run git:merge-dev-into-main && npm run git:merge-main-into-v1"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "express": "~4.16.1",
+    "hbs": "~4.0.4",
     "http-errors": "~1.6.3",
-    "jade": "~1.11.0",
     "knex": "^0.21.12",
     "morgan": "~1.9.1",
     "mysql": "^2.18.1",

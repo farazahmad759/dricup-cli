@@ -239,6 +239,13 @@ const createFrontend = async (options) => {
               );
             });
           }
+          else {
+            app.get("/${dir}", function (req, res) {
+              res.send({
+                message: "Running development environment",
+              });
+            });
+          }
           `;
         });
         _clientJsContent += `
