@@ -176,39 +176,55 @@ const createFrontend = async (options) => {
       title:
         "Creating files. It may take several minutes depending on your network",
       task: () => {
-        // let _supportedFrameworks = {
-        //   react: {
-        //     cli: null,
-        //     bootstrap: "npx create-react-app" + " " + options.path,
-        //   },
-        //   vue: {
-        //     cli: "npm install -g @vue/cli @vue/cli-service-global ",
-        //     bootstrap: "vue create" + " " + options.path + " -d",
-        //   },
-        // };
-        // return new Observable(async (observer) => {
-        //   observer.next(
-        //     'Running "' + _supportedFrameworks[options.framework].cli + '"'
-        //   );
-        //   if (
-        //     _supportedFrameworks[options.framework].cli &&
-        //     options.frameworkCli === "true"
-        //   ) {
-        //     const { stdout } = await execa.command(
-        //       _supportedFrameworks[options.framework].cli
-        //     );
-        //   }
-        //   observer.next(
-        //     'Running "' +
-        //       _supportedFrameworks[options.framework].bootstrap +
-        //       '"'
-        //   );
-        //   const { stdout } = await execa.command(
-        //     _supportedFrameworks[options.framework].bootstrap,
-        //     { cwd: "client" }
-        //   );
-        //   observer.complete();
-        // });
+        let _supportedFrameworks = {
+          react: {
+            cli: null,
+            bootstrap: "npx create-react-app" + " " + options.path,
+          },
+          vue: {
+            cli: "npm install -g @vue/cli @vue/cli-service-global ",
+            bootstrap: "vue create" + " " + options.path + " -d",
+          },
+          static: {
+            cli: null,
+            bootstrap: "mkdir" + " " + options.path,
+          },
+        };
+        return new Observable(async (observer) => {
+          observer.next(
+            'Running "' + _supportedFrameworks[options.framework].cli + '"'
+          );
+          if (
+            _supportedFrameworks[options.framework].cli &&
+            options.frameworkCli === "true"
+          ) {
+            const { stdout } = await execa.command(
+              _supportedFrameworks[options.framework].cli
+            );
+          }
+          observer.next(
+            'Running "' +
+              _supportedFrameworks[options.framework].bootstrap +
+              '"'
+          );
+          if (_supportedFrameworks[options.framework].bootstrap) {
+            const { stdout } = await execa.command(
+              _supportedFrameworks[options.framework].bootstrap,
+              { cwd: "client" }
+            );
+          }
+          if (options.framework === "static") {
+            console.log(options.targetDirectory);
+            let _options = {
+              templateDirectory:
+                options.templateDirectory + "/bootstrap/client/app-1",
+              targetDirectory:
+                options.targetDirectory + "/client/" + options.path,
+            };
+            copyTemplateFiles(_options);
+          }
+          observer.complete();
+        });
       },
     },
     {
@@ -225,7 +241,9 @@ const createFrontend = async (options) => {
         // create client.js file
         let _clientJsContent = ``;
         _clientJsContent += `
-          function register(app) {
+        var express = require("express");
+        var path = require("path");
+        function register(app) {
         `;
         directories.forEach((dir) => {
           _clientJsContent += `
@@ -233,20 +251,28 @@ const createFrontend = async (options) => {
             app.use(
               express.static(path.join(__dirname, "./client/${dir}/build"))
             );
-            app.get("/app-1", function (req, res) {
+            app.get("/${dir}", function (req, res) {
               res.sendFile(
                 path.join(__dirname, "./client/${dir}/build", "index.html")
               );
             });
           }
           else {
-            app.get("/${dir}", function (req, res) {
-              res.send({
-                message: "Running development environment",
-              });
-            });
+            app.get("/${dir}", function (req, res) {`;
+
+          if (options.framework === "static") {
+            _clientJsContent += `app.get("/${dir}", function (req, res) {
+                  res.sendFile(
+                    path.join(__dirname, "./client/${dir}/build", "index.html")
+                  );
+                });`;
+          } else {
+            _clientJsContent += `res.send({
+                  message: "Running development environment",
+                });`;
           }
-          `;
+          _clientJsContent += `});
+          }`;
         });
         _clientJsContent += `
           }
@@ -256,7 +282,7 @@ const createFrontend = async (options) => {
           }
           module.exports = exp;
       `;
-        console.log(_clientJsContent);
+        // console.log(_clientJsContent);
         fs.writeFile(
           "client/client.js",
           `
