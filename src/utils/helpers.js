@@ -116,6 +116,7 @@ export async function readSchemaFiles(schemaDirectory, jsonFullContents) {
     var obj = JSON.parse(fs.readFileSync(schemaDirectory + "/" + file, "utf8"));
     jsonFullContents.push({});
     jsonFullContents[i].schema = obj;
+    jsonFullContents[i].fileName = file;
   });
 }
 

@@ -28,6 +28,7 @@ function parseArgumentsIntoOptions(rawArgs) {
       "--create:routes": Boolean,
       "--create:views": Boolean,
       "--all": Boolean,
+      "--file": String,
       "--force": Boolean,
       "-g": "--git",
       "-y": "--yes",
@@ -51,6 +52,7 @@ function parseArgumentsIntoOptions(rawArgs) {
     createCRUD: args["--create:crud"] || false,
     createProject: args["--create:project"] || false,
     all: args["--all"] || false,
+    file: args["--file"] || null,
     // rawArgs: rawArgs.slice(2),
   };
 }
@@ -113,7 +115,7 @@ export async function cli(args) {
   );
   options.templateDirectory = templateDir;
 
-  // console.log("args", options);
+  console.log("args", options);
   if (options.createProject) {
     createProject(options, []);
     console.log("--create:project");
@@ -133,19 +135,15 @@ export async function cli(args) {
     } else if (options.createRoutes) {
       createRoutes(options, jsonFullContents);
     } else if (options.createCRUD) {
-      createCRUD(options, jsonFullContents);
-      // if (options.all) {
-      //   if (options.force) {
-      //     // createCRUD(options);
-      //   }
-      //   console.log("--create:crud --all");
-      // } else {
-      //   process.argv.shift(); // skip node directory
-      //   process.argv.shift(); // skip directory
-      //   process.argv.shift(); // skip --create:crud
-      //   console.log(process.argv.join(" "));
-      //   console.log("--create:crud file");
-      // }
+      if (options.all) {
+        createCRUD(options, jsonFullContents);
+        console.log("--create:crud --all");
+      } else if (options.file) {
+        createCRUD(options, jsonFullContents);
+        console.log("--create:crud file");
+      } else {
+        console.log("please specify --all or --file argument");
+      }
     }
   }
 }

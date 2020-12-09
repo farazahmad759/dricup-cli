@@ -122,16 +122,29 @@ export {
 
 function _createMigrations(options, jsonData) {
   jsonData.forEach((_content) => {
-    createFile({
-      name: _content.schema.tableName,
-      type: "migration",
-      content: _content.migration,
-      dir: options.targetDirectory + "/",
-      preName: "create_table",
-      postName: "",
-      extension: ".js",
-      _jsonData: {},
-    });
+    if (options.all) {
+      createFile({
+        name: _content.schema.tableName,
+        type: "migration",
+        content: _content.migration,
+        dir: options.targetDirectory + "/",
+        preName: "create_table",
+        postName: "",
+        extension: ".js",
+        _jsonData: {},
+      });
+    } else if (options.file && options.file === _content.fileName) {
+      createFile({
+        name: _content.schema.tableName,
+        type: "migration",
+        content: _content.migration,
+        dir: options.targetDirectory + "/",
+        preName: "create_table",
+        postName: "",
+        extension: ".js",
+        _jsonData: {},
+      });
+    }
   });
 }
 
@@ -139,21 +152,37 @@ const _createModels = async (options, jsonData) => {
   let content_models_index_js = ``;
   let modelNamesObj = {};
   jsonData.forEach((_content) => {
-    console.log("=======", _content.schema.tableName);
-    createFile({
-      name: _content.schema.tableName,
-      type: "model",
-      content: _content.model,
-      dir: options.targetDirectory + "/",
-      preName: "",
-      postName: "",
-      extension: ".js",
-      _jsonData: {},
-    });
-    let modelName = pluralize.singular(_content.schema.tableName);
-    modelName = capitalizeFirstLetter(modelName);
-    content_models_index_js += `\nvar ${modelName} = require('./${_content.schema.tableName}')`;
-    modelNamesObj[modelName] = modelName;
+    if (options.all) {
+      createFile({
+        name: _content.schema.tableName,
+        type: "model",
+        content: _content.model,
+        dir: options.targetDirectory + "/",
+        preName: "",
+        postName: "",
+        extension: ".js",
+        _jsonData: {},
+      });
+      let modelName = pluralize.singular(_content.schema.tableName);
+      modelName = capitalizeFirstLetter(modelName);
+      content_models_index_js += `\nvar ${modelName} = require('./${_content.schema.tableName}')`;
+      modelNamesObj[modelName] = modelName;
+    } else if (options.file && options.file === _content.fileName) {
+      createFile({
+        name: _content.schema.tableName,
+        type: "model",
+        content: _content.model,
+        dir: options.targetDirectory + "/",
+        preName: "",
+        postName: "",
+        extension: ".js",
+        _jsonData: {},
+      });
+      let modelName = pluralize.singular(_content.schema.tableName);
+      modelName = capitalizeFirstLetter(modelName);
+      content_models_index_js += `\nvar ${modelName} = require('./${_content.schema.tableName}')`;
+      modelNamesObj[modelName] = modelName;
+    }
   });
   fs.writeFile(
     "models/index.js",
@@ -175,30 +204,56 @@ const _createModels = async (options, jsonData) => {
 };
 const _createControllers = async (options, jsonData) => {
   jsonData.forEach((_content) => {
-    createFile({
-      name: _content.schema.tableName,
-      type: "controller",
-      content: _content.controller,
-      dir: options.targetDirectory + "/",
-      preName: "",
-      postName: "",
-      extension: ".js",
-      _jsonData: _content.controller,
-    });
+    if (options.all) {
+      createFile({
+        name: _content.schema.tableName,
+        type: "controller",
+        content: _content.controller,
+        dir: options.targetDirectory + "/",
+        preName: "",
+        postName: "",
+        extension: ".js",
+        _jsonData: _content.controller,
+      });
+    } else if (options.file && options.file === _content.fileName) {
+      createFile({
+        name: _content.schema.tableName,
+        type: "controller",
+        content: _content.controller,
+        dir: options.targetDirectory + "/",
+        preName: "",
+        postName: "",
+        extension: ".js",
+        _jsonData: _content.controller,
+      });
+    }
   });
 };
 const _createRoutes = async (options, jsonData) => {
   jsonData.forEach((_content) => {
-    createFile({
-      name: _content.schema.tableName,
-      type: "route",
-      content: _content.route,
-      dir: options.targetDirectory + "/",
-      preName: "",
-      postName: "",
-      extension: ".js",
-      _jsonData: _content.route,
-    });
+    if (options.all) {
+      createFile({
+        name: _content.schema.tableName,
+        type: "route",
+        content: _content.route,
+        dir: options.targetDirectory + "/",
+        preName: "",
+        postName: "",
+        extension: ".js",
+        _jsonData: _content.route,
+      });
+    } else if (options.file && options.file === _content.fileName) {
+      createFile({
+        name: _content.schema.tableName,
+        type: "route",
+        content: _content.route,
+        dir: options.targetDirectory + "/",
+        preName: "",
+        postName: "",
+        extension: ".js",
+        _jsonData: _content.route,
+      });
+    }
   });
   let _options = {
     templateDirectory: options.templateDirectory + "/bootstrap/routes",
