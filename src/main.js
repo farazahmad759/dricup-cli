@@ -285,7 +285,7 @@ const createFrontend = async (options) => {
           else {
             app.get("/${dir}", function (req, res) {`;
 
-          if (options.framework === "static") {
+          if (_clientJsApps[dir].framework === "static") {
             _clientJsContent += `
                   res.sendFile(
                     path.join(__dirname, "/${dir}/build", "index.html")
