@@ -167,12 +167,40 @@ const createFrontend = async (options) => {
   }
   const tasks = new Listr([
     {
-      title: "Generating files",
+      title:
+        "Creating files. It may take several minutes depending on your network",
       task: () => {
+        let _supportedFrameworks = {
+          react: {
+            cli: null,
+            bootstrap: "npx create-react-app" + " " + options.path,
+          },
+          vue: {
+            cli: "npm install -g @vue/cli @vue/cli-service-global ",
+            bootstrap: "vue create" + " " + options.path + " -d",
+          },
+        };
         return new Observable(async (observer) => {
-          observer.next("Executing create-react-app");
+          observer.next(
+            'Running "' + _supportedFrameworks[options.framework].cli + '"'
+          );
+          if (
+            _supportedFrameworks[options.framework].cli &&
+            options.frameworkCli === "true"
+          ) {
+            const { stdout } = await execa.command(
+              _supportedFrameworks[options.framework].cli
+            );
+          }
+
+          observer.next(
+            'Running "' +
+              _supportedFrameworks[options.framework].bootstrap +
+              '"'
+          );
           const { stdout } = await execa.command(
-            "npx create-react-app " + options.path
+            _supportedFrameworks[options.framework].bootstrap,
+            { cwd: "client" }
           );
           observer.complete();
         });

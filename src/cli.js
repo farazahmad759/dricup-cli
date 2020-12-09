@@ -33,6 +33,8 @@ function parseArgumentsIntoOptions(rawArgs) {
       "--all": Boolean,
       "--file": String,
       "--path": String,
+      "--framework": String,
+      "--framework-cli": String,
       "--force": Boolean,
       "-g": "--git",
       "-y": "--yes",
@@ -59,6 +61,8 @@ function parseArgumentsIntoOptions(rawArgs) {
     all: args["--all"] || false,
     file: args["--file"] || null,
     path: args["--path"] || null,
+    framework: args["--framework"] || "react",
+    frameworkCli: args["--framework-cli"] || "true",
     // rawArgs: rawArgs.slice(2),
   };
 }
