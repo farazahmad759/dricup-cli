@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import arg from "arg";
 import inquirer from "inquirer";
 import path from "path";
@@ -142,7 +143,17 @@ export async function cli(args) {
         createCRUD(options, jsonFullContents);
         console.log("--create:crud file");
       } else {
-        console.log("please specify --all or --file argument");
+        console.log(
+          "%s",
+          chalk.red(
+            "Error: Incomplete command. The following commands are supported \n"
+          )
+        );
+        console.log("%s", chalk.grey("--create:crud --all\n"));
+        console.log(
+          "%s",
+          chalk.grey('--create:crud --file="your_schema.json"\n')
+        );
       }
     }
   }

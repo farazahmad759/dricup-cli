@@ -1,9 +1,14 @@
-var tasksRouter = require("./tasks");
-var usersRouter = require("./users");
-var indexRouter = require("./index");
-let models = {
-  tasksRouter,
-  usersRouter,
-  indexRouter,
-};
-module.exports = models;
+
+    
+var usersRouter = require('./users')
+var indexRouter = require('./index')
+    function register(app) {
+      
+app.use('/users', usersRouter)
+app.use('/', indexRouter)
+    }
+    let exp = {
+      register
+    }
+    module.exports = exp;
+    

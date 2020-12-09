@@ -144,6 +144,18 @@ function _createMigrations(options, jsonData) {
         extension: ".js",
         _jsonData: {},
       });
+    } else {
+      console.log(
+        "%s",
+        chalk.red(
+          "Error: Incomplete command. The following commands are supported \n"
+        )
+      );
+      console.log("%s", chalk.grey("--create:crud --all\n"));
+      console.log(
+        "%s",
+        chalk.grey('--create:crud --file="your_schema.json"\n')
+      );
     }
   });
 }
@@ -227,6 +239,7 @@ const _createControllers = async (options, jsonData) => {
 };
 const _createRoutes = async (options, jsonData) => {
   let content_models_index_js = ``;
+  let content_models_register = ``;
   let modelNamesObj = {};
   jsonData.forEach((_content) => {
     if (options.all) {
@@ -254,6 +267,10 @@ const _createRoutes = async (options, jsonData) => {
     }
     let modelName = _content.schema.tableName + "Router";
     content_models_index_js += `\nvar ${modelName} = require('./${_content.schema.tableName}')`;
+    let _route = _content.schema.route
+      ? _content.schema.route + "/" + _content.schema.tableName
+      : "/" + _content.schema.tableName;
+    content_models_register += `\napp.use('${_route}', ${modelName})`;
     modelNamesObj[modelName] = modelName;
   });
   let _options = {
@@ -263,15 +280,19 @@ const _createRoutes = async (options, jsonData) => {
   copyTemplateFiles(_options);
   let modelName = "indexRouter";
   content_models_index_js += `\nvar ${modelName} = require('./index')`;
+  content_models_register += `\napp.use('/', ${modelName})`;
   modelNamesObj[modelName] = modelName;
   fs.writeFile(
     "routes/routes.js",
     `
     ${content_models_index_js}
-    let models = {
-      ${Object.keys(modelNamesObj)}
+    function register(app) {
+      ${content_models_register}
     }
-    module.exports = models;
+    let exp = {
+      register
+    }
+    module.exports = exp;
     `,
     function (err) {
       if (err) {
