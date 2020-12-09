@@ -168,6 +168,8 @@ const createProject = async (options, jsonData) => {
 };
 
 const createFrontend = async (options) => {
+  let _clientJs = require(options.targetDirectory + "/client/client");
+  let _clientJsApps = _clientJs.apps;
   if (!options.path) {
     options.path = "client/app-1";
   }
@@ -223,6 +225,10 @@ const createFrontend = async (options) => {
             };
             copyTemplateFiles(_options);
           }
+          _clientJsApps[options.path] = {
+            framework: options.framework,
+            route: "/" + options.path,
+          };
           observer.complete();
         });
       },
@@ -244,16 +250,15 @@ const createFrontend = async (options) => {
         var express = require("express");
         var path = require("path");`;
 
-        let _clientJs = require(options.targetDirectory + "/client/client");
-        console.log(_clientJs.apps);
+        console.log(_clientJsApps);
         _clientJsContent += `
           let apps = {`;
-        Object.keys(_clientJs.apps).forEach((key) => {
+        Object.keys(_clientJsApps).forEach((key) => {
           _clientJsContent += `
           "${key}": {
-            framework: "${_clientJs.apps[key].framework}"
-            route: "${_clientJs.apps[key].route}"
-          }
+            framework: "${_clientJsApps[key].framework}",
+            route: "${_clientJsApps[key].route}"
+          },
           `;
         });
         _clientJsContent += `}
