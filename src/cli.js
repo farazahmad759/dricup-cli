@@ -113,38 +113,40 @@ export async function cli(args) {
   );
   options.templateDirectory = templateDir;
 
-  readSchemaFiles(
-    options.targetDirectory + "/" + dvCrudConfig.paths.schemas,
-    jsonFullContents
-  );
-  generateContentFromSchemaFiles({ dvCrudConfig }, jsonFullContents);
-  // #0 copy files
-  console.log("args", options);
-  if (options.createMigrations) {
-    createMigrations(options, jsonFullContents);
-  } else if (options.createModels) {
-    createModels(options, jsonFullContents);
-  } else if (options.createControllers) {
-    createControllers(options, jsonFullContents);
-  } else if (options.createRoutes) {
-    createRoutes(options, jsonFullContents);
-  } else if (options.createCRUD) {
-    createCRUD(options, jsonFullContents);
-    // if (options.all) {
-    //   if (options.force) {
-    //     // createCRUD(options);
-    //   }
-    //   console.log("--create:crud --all");
-    // } else {
-    //   process.argv.shift(); // skip node directory
-    //   process.argv.shift(); // skip directory
-    //   process.argv.shift(); // skip --create:crud
-    //   console.log(process.argv.join(" "));
-    //   console.log("--create:crud file");
-    // }
-  } else if (options.createProject) {
-    createProject(options);
+  // console.log("args", options);
+  if (options.createProject) {
+    createProject(options, []);
     console.log("--create:project");
+  } else {
+    readSchemaFiles(
+      options.targetDirectory + "/" + dvCrudConfig.paths.schemas,
+      jsonFullContents
+    );
+    generateContentFromSchemaFiles({ dvCrudConfig }, jsonFullContents);
+
+    if (options.createMigrations) {
+      createMigrations(options, jsonFullContents);
+    } else if (options.createModels) {
+      createModels(options, jsonFullContents);
+    } else if (options.createControllers) {
+      createControllers(options, jsonFullContents);
+    } else if (options.createRoutes) {
+      createRoutes(options, jsonFullContents);
+    } else if (options.createCRUD) {
+      createCRUD(options, jsonFullContents);
+      // if (options.all) {
+      //   if (options.force) {
+      //     // createCRUD(options);
+      //   }
+      //   console.log("--create:crud --all");
+      // } else {
+      //   process.argv.shift(); // skip node directory
+      //   process.argv.shift(); // skip directory
+      //   process.argv.shift(); // skip --create:crud
+      //   console.log(process.argv.join(" "));
+      //   console.log("--create:crud file");
+      // }
+    }
   }
 }
 

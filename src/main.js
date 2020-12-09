@@ -10,11 +10,18 @@ import {
   copyTemplateFiles,
   createFile,
   capitalizeFirstLetter,
+  validateDirectories,
 } from "./utils/helpers";
 var pluralize = require("pluralize");
 
 const createMigrations = async (options, jsonData) => {
   const tasks = new Listr([
+    {
+      title: "Checking schemas directory",
+      task: () => {
+        validateDirectories(["dricup/schemas"]);
+      },
+    },
     {
       title: "Generating migrations",
       task: () => {
@@ -148,7 +155,24 @@ const createCRUD = async (options, jsonData) => {
   createControllers(options, jsonData);
   createRoutes(options, jsonData);
 };
-const createProject = async (options, jsonData) => {};
+const createProject = async (options, jsonData) => {
+  const tasks = new Listr([
+    {
+      title: "Generating files",
+      task: () => {
+        let _options = {
+          templateDirectory: options.templateDirectory + "/bootstrap",
+          targetDirectory: options.targetDirectory,
+        };
+        copyTemplateFiles(_options);
+      },
+    },
+  ]);
+
+  await tasks.run();
+  console.log("%s Project created", chalk.green.bold("DONE"));
+  return true;
+};
 
 export {
   createMigrations,

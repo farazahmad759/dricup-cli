@@ -208,4 +208,18 @@ export const createFile = (params) => {
   });
 };
 
+export const validateDirectories = (dirArray) => {
+  let _success = false;
+  for (let i = 0; i < dirArray.length; i++) {
+    let dir = dirArray[i];
+    if (!fs.existsSync(dir)) {
+      _success = false;
+      throw new Error("schemas directory does not exist.");
+      return _success;
+    }
+    _success = true;
+    return _success;
+  }
+};
+
 export { dvCrudConfig };
