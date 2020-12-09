@@ -24,20 +24,7 @@ const createMigrations = async (options, jsonData) => {
     },
     {
       title: "Generating migrations",
-      task: () => {
-        jsonData.forEach((_content) => {
-          createFile({
-            name: _content.schema.tableName,
-            type: "migration",
-            content: _content.migration,
-            dir: options.targetDirectory + "/",
-            preName: "create_table",
-            postName: "",
-            extension: ".js",
-            _jsonData: {},
-          });
-        });
-      },
+      task: () => _createMigrations(options, jsonData),
     },
   ]);
 
@@ -46,52 +33,10 @@ const createMigrations = async (options, jsonData) => {
   return true;
 };
 const createModels = async (options, jsonData) => {
-  let content_models_index_js = ``;
-  let modelNamesObj = {};
   const tasks = new Listr([
     {
       title: "Creating models",
-      task: () => {
-        jsonData.forEach((_content) => {
-          console.log("=======", _content.schema.tableName);
-          createFile({
-            name: _content.schema.tableName,
-            type: "model",
-            content: _content.model,
-            dir: options.targetDirectory + "/",
-            preName: "",
-            postName: "",
-            extension: ".js",
-            _jsonData: {},
-          });
-          let modelName = pluralize.singular(_content.schema.tableName);
-          modelName = capitalizeFirstLetter(modelName);
-          content_models_index_js += `\nvar ${modelName} = require('./${_content.schema.tableName}')`;
-          modelNamesObj[modelName] = modelName;
-        });
-      },
-    },
-    {
-      title: "Creating index.js",
-      task: () => {
-        fs.writeFile(
-          "models/index.js",
-          `
-          ${content_models_index_js}
-          let models = {
-            ${Object.keys(modelNamesObj)}
-          }
-          module.exports = models;
-          `,
-          function (err) {
-            if (err) {
-              console.log(err);
-            } else {
-              console.log("models/index.js" + " has been created");
-            }
-          }
-        );
-      },
+      task: () => _createModels(options, jsonData),
     },
   ]);
 
@@ -103,20 +48,7 @@ const createControllers = async (options, jsonData) => {
   const tasks = new Listr([
     {
       title: "Generating Controllers",
-      task: () => {
-        jsonData.forEach((_content) => {
-          createFile({
-            name: _content.schema.tableName,
-            type: "controller",
-            content: _content.controller,
-            dir: options.targetDirectory + "/",
-            preName: "",
-            postName: "",
-            extension: ".js",
-            _jsonData: _content.controller,
-          });
-        });
-      },
+      task: () => _createControllers(options, jsonData),
     },
   ]);
 
@@ -128,20 +60,7 @@ const createRoutes = async (options, jsonData) => {
   const tasks = new Listr([
     {
       title: "Generating Controllers",
-      task: () => {
-        jsonData.forEach((_content) => {
-          createFile({
-            name: _content.schema.tableName,
-            type: "route",
-            content: _content.route,
-            dir: options.targetDirectory + "/",
-            preName: "",
-            postName: "",
-            extension: ".js",
-            _jsonData: _content.route,
-          });
-        });
-      },
+      task: () => _createRoutes(options, jsonData),
     },
   ]);
 
@@ -150,10 +69,28 @@ const createRoutes = async (options, jsonData) => {
   return true;
 };
 const createCRUD = async (options, jsonData) => {
-  createMigrations(options, jsonData);
-  createModels(options, jsonData);
-  createControllers(options, jsonData);
-  createRoutes(options, jsonData);
+  const tasks = new Listr([
+    {
+      title: "Generating Migrations",
+      task: () => _createMigrations(options, jsonData),
+    },
+    {
+      title: "Generating Models",
+      task: () => _createModels(options, jsonData),
+    },
+    {
+      title: "Generating Controllers",
+      task: () => _createControllers(options, jsonData),
+    },
+    {
+      title: "Generating Routes",
+      task: () => _createRoutes(options, jsonData),
+    },
+  ]);
+
+  await tasks.run();
+  console.log("%s CRUD created", chalk.green.bold("DONE"));
+  return true;
 };
 const createProject = async (options, jsonData) => {
   const tasks = new Listr([
@@ -181,4 +118,91 @@ export {
   createRoutes,
   createCRUD,
   createProject,
+};
+
+function _createMigrations(options, jsonData) {
+  jsonData.forEach((_content) => {
+    createFile({
+      name: _content.schema.tableName,
+      type: "migration",
+      content: _content.migration,
+      dir: options.targetDirectory + "/",
+      preName: "create_table",
+      postName: "",
+      extension: ".js",
+      _jsonData: {},
+    });
+  });
+}
+
+const _createModels = async (options, jsonData) => {
+  let content_models_index_js = ``;
+  let modelNamesObj = {};
+  jsonData.forEach((_content) => {
+    console.log("=======", _content.schema.tableName);
+    createFile({
+      name: _content.schema.tableName,
+      type: "model",
+      content: _content.model,
+      dir: options.targetDirectory + "/",
+      preName: "",
+      postName: "",
+      extension: ".js",
+      _jsonData: {},
+    });
+    let modelName = pluralize.singular(_content.schema.tableName);
+    modelName = capitalizeFirstLetter(modelName);
+    content_models_index_js += `\nvar ${modelName} = require('./${_content.schema.tableName}')`;
+    modelNamesObj[modelName] = modelName;
+  });
+  fs.writeFile(
+    "models/index.js",
+    `
+    ${content_models_index_js}
+    let models = {
+      ${Object.keys(modelNamesObj)}
+    }
+    module.exports = models;
+    `,
+    function (err) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("models/index.js" + " has been created");
+      }
+    }
+  );
+};
+const _createControllers = async (options, jsonData) => {
+  jsonData.forEach((_content) => {
+    createFile({
+      name: _content.schema.tableName,
+      type: "controller",
+      content: _content.controller,
+      dir: options.targetDirectory + "/",
+      preName: "",
+      postName: "",
+      extension: ".js",
+      _jsonData: _content.controller,
+    });
+  });
+};
+const _createRoutes = async (options, jsonData) => {
+  jsonData.forEach((_content) => {
+    createFile({
+      name: _content.schema.tableName,
+      type: "route",
+      content: _content.route,
+      dir: options.targetDirectory + "/",
+      preName: "",
+      postName: "",
+      extension: ".js",
+      _jsonData: _content.route,
+    });
+  });
+  let _options = {
+    templateDirectory: options.templateDirectory + "/bootstrap/routes",
+    targetDirectory: options.targetDirectory + "/routes",
+  };
+  copyTemplateFiles(_options);
 };
