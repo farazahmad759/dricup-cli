@@ -11,6 +11,7 @@ import {
   createRoutes,
   createCRUD,
   createProject,
+  createFrontend,
 } from "./main";
 const { getInstalledPathSync } = require("get-installed-path");
 
@@ -22,6 +23,7 @@ function parseArgumentsIntoOptions(rawArgs) {
       "--yes": Boolean,
       "--install": Boolean,
       "--create:project": Boolean,
+      "--create:frontend": Boolean,
       "--create:crud": Boolean,
       "--create:migrations": Boolean,
       "--create:models": Boolean,
@@ -30,6 +32,7 @@ function parseArgumentsIntoOptions(rawArgs) {
       "--create:views": Boolean,
       "--all": Boolean,
       "--file": String,
+      "--path": String,
       "--force": Boolean,
       "-g": "--git",
       "-y": "--yes",
@@ -52,8 +55,10 @@ function parseArgumentsIntoOptions(rawArgs) {
     createRoutes: args["--create:routes"] || false,
     createCRUD: args["--create:crud"] || false,
     createProject: args["--create:project"] || false,
+    createFrontend: args["--create:frontend"] || false,
     all: args["--all"] || false,
     file: args["--file"] || null,
+    path: args["--path"] || null,
     // rawArgs: rawArgs.slice(2),
   };
 }
@@ -120,6 +125,9 @@ export async function cli(args) {
   if (options.createProject) {
     createProject(options, []);
     console.log("--create:project");
+  }
+  if (options.createFrontend) {
+    createFrontend(options);
   } else {
     readSchemaFiles(
       options.targetDirectory + "/" + dvCrudConfig.paths.schemas,

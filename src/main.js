@@ -13,6 +13,7 @@ import {
   validateDirectories,
   validateCommand,
 } from "./utils/helpers";
+const { Observable } = require("rxjs");
 var pluralize = require("pluralize");
 
 const createMigrations = async (options, jsonData) => {
@@ -160,6 +161,30 @@ const createProject = async (options, jsonData) => {
   return true;
 };
 
+const createFrontend = async (options) => {
+  if (!options.path) {
+    options.path = "client/app-1";
+  }
+  const tasks = new Listr([
+    {
+      title: "Generating files",
+      task: () => {
+        return new Observable(async (observer) => {
+          observer.next("Executing create-react-app");
+          const { stdout } = await execa.command(
+            "npx create-react-app " + options.path
+          );
+          observer.complete();
+        });
+      },
+    },
+  ]);
+
+  await tasks.run();
+  console.log("%s Project created", chalk.green.bold("DONE"));
+  return true;
+};
+
 export {
   createMigrations,
   createModels,
@@ -167,6 +192,7 @@ export {
   createRoutes,
   createCRUD,
   createProject,
+  createFrontend,
 };
 
 function _createMigrations(options, jsonData) {
