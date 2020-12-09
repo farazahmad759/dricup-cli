@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import { promisify } from "util";
 import ncp from "ncp";
-
+import chalk from "chalk";
 var dvCrudConfig = {};
 const copy = promisify(ncp);
 
@@ -223,4 +223,9 @@ export const validateDirectories = (dirArray) => {
   }
 };
 
+export const validateCommand = (options, msgs) => {
+  if (!options.all && !options.file) {
+    throw new Error(chalk.red(msgs[0]) + chalk.gray(msgs[1]));
+  }
+};
 export { dvCrudConfig };

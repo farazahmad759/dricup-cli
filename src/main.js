@@ -11,22 +11,35 @@ import {
   createFile,
   capitalizeFirstLetter,
   validateDirectories,
+  validateCommand,
 } from "./utils/helpers";
 var pluralize = require("pluralize");
 
 const createMigrations = async (options, jsonData) => {
-  const tasks = new Listr([
-    {
-      title: "Checking schemas directory",
-      task: () => {
-        validateDirectories(["dricup/schemas"]);
+  const tasks = new Listr(
+    [
+      {
+        title: "Checking command",
+        task: () => {
+          validateCommand(options, [
+            "Incomplete command. Supported commands:\n",
+            '--create:migrations --all\n--create:migrations --file="your_schema_file.json"',
+          ]);
+        },
       },
-    },
-    {
-      title: "Generating migrations",
-      task: () => _createMigrations(options, jsonData),
-    },
-  ]);
+      {
+        title: "Checking schemas directory",
+        task: () => {
+          validateDirectories(["dricup/schemas"]);
+        },
+      },
+      {
+        title: "Generating migrations",
+        task: () => _createMigrations(options, jsonData),
+      },
+    ],
+    { exitOnError: true }
+  );
 
   await tasks.run();
   console.log("%s Migrations created", chalk.green.bold("DONE"));
@@ -34,6 +47,15 @@ const createMigrations = async (options, jsonData) => {
 };
 const createModels = async (options, jsonData) => {
   const tasks = new Listr([
+    {
+      title: "Checking command",
+      task: () => {
+        validateCommand(options, [
+          "Incomplete command. Supported commands:\n",
+          '--create:models --all\n--create:models --file="your_schema_file.json"',
+        ]);
+      },
+    },
     {
       title: "Creating models",
       task: () => _createModels(options, jsonData),
@@ -47,6 +69,15 @@ const createModels = async (options, jsonData) => {
 const createControllers = async (options, jsonData) => {
   const tasks = new Listr([
     {
+      title: "Checking command",
+      task: () => {
+        validateCommand(options, [
+          "Incomplete command. Supported commands:\n",
+          '--create:controllers --all\n--create:controllers --file="your_schema_file.json"',
+        ]);
+      },
+    },
+    {
       title: "Generating Controllers",
       task: () => _createControllers(options, jsonData),
     },
@@ -59,17 +90,35 @@ const createControllers = async (options, jsonData) => {
 const createRoutes = async (options, jsonData) => {
   const tasks = new Listr([
     {
-      title: "Generating Controllers",
+      title: "Checking command",
+      task: () => {
+        validateCommand(options, [
+          "Incomplete command. Supported commands:\n",
+          '--create:routes --all\n--create:routes --file="your_schema_file.json"',
+        ]);
+      },
+    },
+    {
+      title: "Generating Routes",
       task: () => _createRoutes(options, jsonData),
     },
   ]);
 
   await tasks.run();
-  console.log("%s Controllers created", chalk.green.bold("DONE"));
+  console.log("%s Routes created", chalk.green.bold("DONE"));
   return true;
 };
 const createCRUD = async (options, jsonData) => {
   const tasks = new Listr([
+    {
+      title: "Checking command",
+      task: () => {
+        validateCommand(options, [
+          "Incomplete command. Supported commands:\n",
+          '--create:crud --all\n--create:crud --file="your_schema_file.json"',
+        ]);
+      },
+    },
     {
       title: "Generating Migrations",
       task: () => _createMigrations(options, jsonData),
@@ -144,18 +193,6 @@ function _createMigrations(options, jsonData) {
         extension: ".js",
         _jsonData: {},
       });
-    } else {
-      console.log(
-        "%s",
-        chalk.red(
-          "Error: Incomplete command. The following commands are supported \n"
-        )
-      );
-      console.log("%s", chalk.grey("--create:crud --all\n"));
-      console.log(
-        "%s",
-        chalk.grey('--create:crud --file="your_schema.json"\n')
-      );
     }
   });
 }
