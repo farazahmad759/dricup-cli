@@ -242,7 +242,24 @@ const createFrontend = async (options) => {
         let _clientJsContent = ``;
         _clientJsContent += `
         var express = require("express");
-        var path = require("path");
+        var path = require("path");`;
+
+        let _clientJs = require(options.targetDirectory + "/client/client");
+        console.log(_clientJs.apps);
+        _clientJsContent += `
+          let apps = {`;
+        Object.keys(_clientJs.apps).forEach((key) => {
+          _clientJsContent += `
+          "${key}": {
+            framework: "${_clientJs.apps[key].framework}"
+            route: "${_clientJs.apps[key].route}"
+          }
+          `;
+        });
+        _clientJsContent += `}
+        `;
+
+        _clientJsContent += `
         function register(app) {
         `;
         directories.forEach((dir) => {
@@ -284,7 +301,8 @@ const createFrontend = async (options) => {
           }
 
           let exp = {
-            register
+            register,
+            apps
           }
           module.exports = exp;
       `;
