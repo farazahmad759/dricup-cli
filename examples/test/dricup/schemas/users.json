@@ -1,0 +1,17 @@
+{
+  "tableName": "users",
+  "fields": [
+    {
+      "title": "name",
+      "type": "string"
+    },
+    {
+      "title": "email",
+      "type": "string"
+    },
+    {
+      "title": "password",
+      "type": "string"
+    }
+  ]
+}

@@ -126,11 +126,11 @@ export async function cli(args) {
   options.templateDirectory = templateDir;
 
   console.log("args", options);
+
   if (options.createProject) {
-    createProject(options, []);
+    createProject(options);
     console.log("--create:project");
-  }
-  if (options.createFrontend) {
+  } else if (options.createFrontend) {
     createFrontend(options);
   } else {
     readSchemaFiles(

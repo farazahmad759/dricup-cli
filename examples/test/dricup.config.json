@@ -1,0 +1,22 @@
+{
+  "YOUR_COMPANY_NAME": "Dricup",
+  "JSON_API_VERSION": "1.0",
+  "database_prefix": "",
+  "DATABASE_PREFIX": "dc",
+  "paths": {
+    "schemas": "dricup/schemas/",
+    "knexfile": "knexfile.js/",
+    "migrations": "migrations/",
+    "models": "models/",
+    "controllers": "controllers/",
+    "views": "views/",
+    "routes": "routes/"
+  },
+  "schemas_path": "dricup/schemas/",
+  "knexfile_path": "knexfile.js/",
+  "migrations_path": "migrations/",
+  "models_path": "models/",
+  "controllers_path": "controllers/",
+  "views_path": "views/",
+  "routes_path": "routes/"
+}

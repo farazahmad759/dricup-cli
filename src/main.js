@@ -154,6 +154,12 @@ const createProject = async (options, jsonData) => {
         copyTemplateFiles(_options);
       },
     },
+    {
+      title: "Generating CRUD",
+      task: async () => {
+        await execa.command("dricup --create:crud --all");
+      },
+    },
   ]);
 
   await tasks.run();
@@ -170,40 +176,93 @@ const createFrontend = async (options) => {
       title:
         "Creating files. It may take several minutes depending on your network",
       task: () => {
-        let _supportedFrameworks = {
-          react: {
-            cli: null,
-            bootstrap: "npx create-react-app" + " " + options.path,
-          },
-          vue: {
-            cli: "npm install -g @vue/cli @vue/cli-service-global ",
-            bootstrap: "vue create" + " " + options.path + " -d",
-          },
+        // let _supportedFrameworks = {
+        //   react: {
+        //     cli: null,
+        //     bootstrap: "npx create-react-app" + " " + options.path,
+        //   },
+        //   vue: {
+        //     cli: "npm install -g @vue/cli @vue/cli-service-global ",
+        //     bootstrap: "vue create" + " " + options.path + " -d",
+        //   },
+        // };
+        // return new Observable(async (observer) => {
+        //   observer.next(
+        //     'Running "' + _supportedFrameworks[options.framework].cli + '"'
+        //   );
+        //   if (
+        //     _supportedFrameworks[options.framework].cli &&
+        //     options.frameworkCli === "true"
+        //   ) {
+        //     const { stdout } = await execa.command(
+        //       _supportedFrameworks[options.framework].cli
+        //     );
+        //   }
+        //   observer.next(
+        //     'Running "' +
+        //       _supportedFrameworks[options.framework].bootstrap +
+        //       '"'
+        //   );
+        //   const { stdout } = await execa.command(
+        //     _supportedFrameworks[options.framework].bootstrap,
+        //     { cwd: "client" }
+        //   );
+        //   observer.complete();
+        // });
+      },
+    },
+    {
+      title: "Updating app.js",
+      task: () => {
+        const getDirectories = (source) => {
+          return fs
+            .readdirSync(source, { withFileTypes: true })
+            .filter((dirent) => dirent.isDirectory())
+            .map((dirent) => dirent.name);
         };
-        return new Observable(async (observer) => {
-          observer.next(
-            'Running "' + _supportedFrameworks[options.framework].cli + '"'
-          );
-          if (
-            _supportedFrameworks[options.framework].cli &&
-            options.frameworkCli === "true"
-          ) {
-            const { stdout } = await execa.command(
-              _supportedFrameworks[options.framework].cli
+        let directories = getDirectories(options.targetDirectory + "/client");
+
+        // create client.js file
+        let _clientJsContent = ``;
+        _clientJsContent += `
+          function register(app) {
+        `;
+        directories.forEach((dir) => {
+          _clientJsContent += `
+          if (process.env.NODE_ENV === "production") {
+            app.use(
+              express.static(path.join(__dirname, "./client/${dir}/build"))
             );
+            app.get("/app-1", function (req, res) {
+              res.sendFile(
+                path.join(__dirname, "./client/${dir}/build", "index.html")
+              );
+            });
+          }
+          `;
+        });
+        _clientJsContent += `
           }
 
-          observer.next(
-            'Running "' +
-              _supportedFrameworks[options.framework].bootstrap +
-              '"'
-          );
-          const { stdout } = await execa.command(
-            _supportedFrameworks[options.framework].bootstrap,
-            { cwd: "client" }
-          );
-          observer.complete();
-        });
+          let exp = {
+            register
+          }
+          module.exports = exp;
+      `;
+        console.log(_clientJsContent);
+        fs.writeFile(
+          "client/client.js",
+          `
+          ${_clientJsContent}
+          `,
+          function (err) {
+            if (err) {
+              console.log(err);
+            } else {
+              console.log("client/client.js" + " has been created");
+            }
+          }
+        );
       },
     },
   ]);
