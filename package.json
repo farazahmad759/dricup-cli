@@ -1,10 +1,13 @@
 {
   "name": "@dricup/dricup-cli",
-  "version": "1.0.9",
+  "version": "1.1.0",
   "description": "A CLI to quickly create Express JS Api's",
   "main": "src/cli.js",
   "bin": {
     "dricup": "bin/dricup"
+  },
+  "engines": {
+    "node": ">=13.x"
   },
   "publishConfig": {
     "access": "public"
@@ -21,7 +24,12 @@
   },
   "keywords": [
     "dricup",
-    "dricup-cli"
+    "dricup-cli",
+    "mern",
+    "mean",
+    "mevn",
+    "express-generator",
+    "node app-generator"
   ],
   "files": [
     "bin/",

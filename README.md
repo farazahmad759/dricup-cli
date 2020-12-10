@@ -1,4 +1,89 @@
-# Dricup-cli
+<header>
+
+<h1 style="font-weight:200; font-size:80px">Dricup CLI</h1>
+
+</header>
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+![node-current (scoped with tag)](https://img.shields.io/node/v/@dricup/dricup-cli/latest?color=green)
+![Dependencies](https://img.shields.io/badge/dependencies-up%20to%20date-brightgreen.svg)
+[![GitHub Issues](https://img.shields.io/github/issues/farazahmad759/dricup-cli)](https://github.com/farazahmad759/dricup-cli/issues)
+![Contributions welcome](https://img.shields.io/badge/contributions-welcome-orange.svg)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
+A simple straightforward package to bootstrap your MERN and MEVN stack projects. The projects generated through `dricup-cli` are pre-configured for deployment to [vercel](https://vercel.com/).
+
+## Table of Contents
+
+- [Installation](#Installation)
+- [Features](#Features)
+- [Quickstart](#Quickstart)
+- [Documentation](./documentation/features.md)
+- [Acknowledgements](#Acknowledgements)
+- [Authors](#Authors)
+- [Support](#Support)
+- [Use cases](#Use-cases)
+- [License](#License)
+
+## Installation
+
+```
+npm install -g @dricup/dricup-cli
+```
+
+## Features
+
+- Bootstraps your MERN/MEVN stack projects.
+- From `your_schema_file.json`, you can instantly create CRUD API's with a single command by generating the following
+  - Database _Migrations_
+  - _Models_
+  - _Controllers_
+  - _Routes_
+- Supports `handlebars` templating engine for server-side-rendering (SSR)
+- Supports the generation of client-side-rendered (CSR) apps
+- Your projects are pre-configured for instant deployment to [Vercel](https://vercel.com/).
+- Clean directory structure, taken from [express-generator](https://github.com/expressjs/generator)
+-
+
+## Quickstart
+
+First of all open the _terminal_ if you are using MacOS or Linux, or _command_prompt_ for windows. Then run `npm install -g @dricup-dricup-cli` to install _dricup-cli_ globally.
+
+Create and navigate to a new directory for your project
+
+```
+mkdir dricup_project && cd dricup_project
+```
+
+Create the project
+
+```
+dricup --create:project
+```
+
+Install the packages
+
+```
+npm install
+```
+
+Run the project
+
+```
+npm run server
+```
+
+Open [localhost:3000](http://localhost:3000)
+
+## Documentation
+
+## Acknowledgements
+
+## Authors
+
+## Support
+
+## License
 
 Create quick RESTful APIs using Express + Knex + Objection. A single command `dricup` will generate
 
@@ -9,12 +94,12 @@ Create quick RESTful APIs using Express + Knex + Objection. A single command `dr
 
 You will save hours of your development.
 
-## Use Cases
+## Use-cases
 
 - Build a Todo App in less than 5 minutes
   https://farazahmad759.medium.com/build-a-todo-app-in-less-than-5-minutes-in-node-express-ada63d7c54b9
 
-# Getting started
+# Getting-started
 
 You get CRUD APIs in six simple steps.
 

@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "nodemon index.js",
+    "server": "browserify -t babelify views/main.js --standalone main -o public/main.js  && nodemon index.js",
     "client": "cd client/apps/app-1 && npm run start",
     "build": "cd client/apps/app-1 && npm install && npm run build",
     "mig:up-all": "i=0; while [ $i -le 5 ]; do knex migrate:up; i=$((i+1)); done",
@@ -17,15 +17,24 @@
     "git:dev-into-v1-danger": "npm run git:merge-dev-into-main && npm run git:merge-main-into-v1"
   },
   "dependencies": {
+    "@babel/preset-env": "^7.12.10",
+    "@babel/preset-react": "^7.12.10",
+    "axios": "^0.21.0",
+    "babelify": "^10.0.0",
+    "browserify": "^17.0.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "express": "~4.16.1",
+    "express-react-views": "^0.11.0",
     "hbs": "~4.0.4",
     "http-errors": "~1.6.3",
     "knex": "^0.21.12",
     "morgan": "~1.9.1",
     "mysql": "^2.18.1",
     "nodemon": "^2.0.6",
-    "objection": "^2.2.3"
+    "objection": "^2.2.3",
+    "prop-types": "^15.7.2",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0"
   }
 }
