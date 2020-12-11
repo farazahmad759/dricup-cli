@@ -73,7 +73,48 @@ Run the project
 npm run server
 ```
 
-Open [localhost:3000](http://localhost:3000)
+Open [localhost:3000](http://localhost:3000) and see your MERN app up and running :) This page comes to you via Server Side Rendering. Now, if you type [localhost:3000/app-1](http://localhost:3000/app-1), you will see another web page coming to you via Client Side Rendering.
+
+**Database configuration**
+Uptill now we have only viewed static web pages that do not show any content coming from the database. In order to involve database, you need to provide credentials for your database. Don't worry, it's very easy. Just follow along.
+
+1. Open `knexfile.js` in the root of your project. You will see a `knexConfig` object in it that has several database configurations for different environments (development, staging, production). For testing on local machine, we need to update _development_ credentials. The default credentials are
+
+```
+  development: {
+    client: "mysql",
+    connection: {
+      host: "127.0.0.1",
+      database: "express-test-app",
+      user: "root",
+      password: "",
+    },
+    migrations: {
+      directory: __dirname + "/migrations",
+    },
+    seeds: {
+      directory: __dirname + "/seeds/development",
+    }
+  }
+```
+
+Just update `host`, `database`, `user` and `password` fields in the above object.
+
+2. Run the following command
+
+```
+knex migrate:up
+```
+
+3. Congratulations! Now you have access to _users_ Api and you can call the following endpoints
+
+| HTTP Method | URL                             | Function                                                                                                                                                     |
+| ----------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| POST        | http://localhost:3000/users     | Create new user in database                                                                                                                                  |
+| GET         | http://localhost:3000/users/:id | Find a user by Id                                                                                                                                            |
+| PUT         | http://localhost:3000/users/:id | Update a user by Id                                                                                                                                          |
+| DELETE      | http://localhost:3000/users/:id | Delete a user by Id                                                                                                                                          |
+| GET         | http://localhost:3000/users     | Finds all users <br> You can also filter the users by providing query paramaters in the URL. Like, http://localhost:3000/users?email=farazahmad759@gmail.com |
 
 ## Supported-commands
 
@@ -88,61 +129,7 @@ Dricup CLI provides several helpful commands for creating database migrations, M
 | Create Routes      | **Single**<br>`dricup --create:routes --file="file_name.json"` <br> Reads `file_name.json` from _dricup/schemas_ directory and creates a _Route_ file in _routes_ directory.<br><br> **Bulk**<br>`dricup --create:routes --all` <br> Reads all `.json` files from _dricup/schemas_ directory and creates _Routes_ for all of them in _routes_ directory. <hr> Note: The routes commands above will also create/update an additional file `routes.js` in _routes_ directory.                                                                   |
 | Create CRUD APIs   | **Single**<br>`dricup --create:crud --file="file_name.json"` <br> Reads `file_name.json` from _dricup/schemas_ directory and creates Migration, Model, Controller and Route files in respective directories.<br><br> **Bulk**<br>`dricup --create:crud --all` <br> Reads all `.json` files from _dricup/schemas_ directory and creates Migrations, Models, Controllers and Routes for all of them in respective directories. <hr> Note: The `crud` commands above will also create/update an additional file `routes.js` in routes directory. |
 
-## Acknowledgements
-
-## Authors
-
-## Support
-
-## License
-
-Create quick RESTful APIs using Express + Knex + Objection. A single command `dricup` will generate
-
-- Migration files,
-- Model files,
-- Controller files, and
-- Express Route files
-
-You will save hours of your development.
-
-## Use-cases
-
-- Build a Todo App in less than 5 minutes
-  https://farazahmad759.medium.com/build-a-todo-app-in-less-than-5-minutes-in-node-express-ada63d7c54b9
-
-# Getting-started
-
-You get CRUD APIs in six simple steps.
-
-## Step 1
-
-Install the package globally using
-
-```
-npm install -g @dricup/dricup-cli
-```
-
-## Step 2
-
-Navigate to your Express project's root directory, and create _schemas_ directory in `<project_root>/db` directory. It is the `<project_root>/db/schemas` directory where you will create `.json` schema files.
-
-Your _Express_ project directory structure should look like this
-
-```
-.
-├── app.js
-├── bin
-│   └── www
-└── db
-    └── schemas
-        ├── table_1_schema.json
-        ├── table_2_schema.json
-        └── table_3_schema.json
-```
-
-## Step 3
-
-Create schema file(s). A sample schema file for `users` SQL table is included below. Feel free to copy its content and modify as per your needs.
+## Documentation
 
 ```
 {
@@ -168,82 +155,18 @@ Create schema file(s). A sample schema file for `users` SQL table is included be
 }
 ```
 
-## Step 4
+## Acknowledgements
 
-Run the following command
+## Authors
 
-```
-dricup
-```
+## Support
 
-and then install _npm_ packages using
+## License
 
-```
-npm install
-```
+## Use-cases
 
-The `dricup` command will generate the following files and directories.
-
-```
-db
---- migrations
------- create_table_users.js
---- models
------- users.js
---- controllers
------- users.js
-routes
---- users.js
-knexfile.js
-dricup.config.json
-```
-
-## Step 5
-
-Open knexfile.js and adjust your database credentials. A sample configuration will be like this
-
-```
-client: "mysql",
-connection: {
-    host: "127.0.0.1",
-    database: "express-test-app",
-    user: "root",
-    password: "password",
-},
-migrations: {
-    directory: __dirname + "/db/migrations",
-},
-seeds: {
-    directory: __dirname + "/db/seeds/development",
-},
-```
-
-## Step 6
-
-In your `app.js` file, add the following two lines
-
-```
-/** ================
- *  your app.js file
- *  ================
- */
-
-
-// some code
-
-var usersRouter = require('./routes/users');
-app.use('/users', usersRouter);
-
-// even deliciuos code
-```
-
-Now start your _Express_ App using `npm start`, and boom!!! your CRUD API is ready. `dricup` provides the following _routes_
-
-- `POST` /users --- to create a new user
-- `GET` /users/:id --- to get a user by Id
-- `PUT` /users/:id --- to update a user by Id
-- `DELETE` /users/:id --- to delete a user by Id
-- `GET` /users --- to get all users (filters by each database column are already created for you)
+- Build a Todo App in less than 5 minutes
+  https://farazahmad759.medium.com/build-a-todo-app-in-less-than-5-minutes-in-node-express-ada63d7c54b9
 
 # Capabilities
 
