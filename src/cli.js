@@ -127,11 +127,8 @@ export async function cli(args) {
   );
   options.templateDirectory = templateDir;
 
-  console.log("args", options);
-
   if (options.createProject) {
     createProject(options);
-    console.log("--create:project");
   } else if (options.createFrontend) {
     createFrontend(options);
   } else {
