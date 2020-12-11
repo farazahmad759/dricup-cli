@@ -1,6 +1,6 @@
 <header>
 
-<h1 style="font-weight:200; font-size:80px">Dricup CLI</h1>
+<h1 style="font-weight:200; font-size:80px">Dricup CLI (beta)</h1>
 
 </header>
 
@@ -198,37 +198,35 @@ Whether you want Migrations, Models, Controllers or Routes (or even full API cre
 
 ## Acknowledgements
 
+- Inspired by [Laravel CRUD generator](https://github.com/appzcoder/crud-generator) that speeds up the app development process by minimizing the redundancy.
+- Dricup CLI is not a framework, rather it makes use of [Express JS](https://expressjs.com/) framework to create the MERN, MEAN and MEVN stack apps quickly.
+- The basic boilerplate code and directory structure has been taken from [express-generator](https://github.com/expressjs/generator)
+- Database migrations are handled using [knex](http://knexjs.org/)
+- [Objection Js](https://vincit.github.io/objection.js/) is used to created Models and Controllers (CRUD Api). This is the only supported [ORM](https://en.wikipedia.org/wiki/Object%E2%80%93relational_mapping#:~:text=Object%2Drelational%20mapping%20(ORM%2C,from%20within%20the%20programming%20language.) as of now. Support for other ORM's will be added soon.
+- [Nodemon](https://github.com/remy/nodemon)
+
 ## Authors
+
+- Faraz Ahmad (https://github.com/farazahmad759)
 
 ## Support
 
+This package has been created to save the precious time that each developer spends while setting up every project. It is still in beta. I am actively working to make it robust. If you find this helpful and want to support me, there are two ways you can do this.
+
+1. <a href="https://www.patreon.com/bePatron?u=46870467" data-patreon-widget-type="become-patron-button">Become a Patron!</a><script async src="https://c6.patreon.com/becomePatronButton.bundle.js"></script>
+
+2. Work with me (Contact: farazahmad759@gmail.com)
+
 ## License
+
+[MIT](https://github.com/farazahmad759/dricup-cli/blob/main/LICENSE)
 
 ## Use-cases
 
-- Build a Todo App in less than 5 minutes
-  https://farazahmad759.medium.com/build-a-todo-app-in-less-than-5-minutes-in-node-express-ada63d7c54b9
-
-# Capabilities
-
-- I have described the capabilities of the `dricup` in
-  [Build a Todo App in less than 5 minutes](https://farazahmad759.medium.com/build-a-todo-app-in-less-than-5-minutes-in-node-express-ada63d7c54b9)
-
-- There is much more you can do with it. Visit the `db/` directory in your project root and explore the directories inside it, most notably the `db/controllers` directory.
-- Take a look at the `todos` controller file created by the package [here](https://github.com/farazahmad759/dricup-cli/blob/main/examples/hello-todo/db/controllers/todos.js). The controller file has five methods in it for CRUD operations.
-
-  - createOne
-  - getOne
-  - updateOne
-  - deleteOne
-  - getAll
-
-Feel free to modify any of the above methods according to your needs. You can even add more methods to your controllers if you want. `dricup-cli` provides you the boilerplate code for writing API's and thus saves so much of your precious time.
-
-- `dricup.config.json` file in the root of your project defines the paths where the files will be generated, which you can modify it as you want.
+Coming soon
 
 # What is more?
 
-This is just the starting. Several options will be added very soon to configure libraries such as [Sequelize](https://sequelize.org/).
+This is just the beginning. Several options will be added very soon to configure libraries such as [Sequelize](https://sequelize.org/).
 
-Feel free to request features, and I will be delighted to assist you in the issues you experience while using this package.
+Feel free to request features, and I will be delighted to assist you in the issues that you experience while using this package.
