@@ -18,6 +18,7 @@ A simple straightforward package to bootstrap your MERN and MEVN stack projects.
 - [Installation](#Installation)
 - [Features](#Features)
 - [Quickstart](#Quickstart)
+- [Supported Commands](#Supported-commands)
 - [Documentation](./documentation/features.md)
 - [Acknowledgements](#Acknowledgements)
 - [Authors](#Authors)
@@ -75,7 +76,7 @@ npm run server
 
 Open [localhost:3000](http://localhost:3000) and see your MERN app up and running :) This page comes to you via Server Side Rendering. Now, if you type [localhost:3000/app-1](http://localhost:3000/app-1), you will see another web page coming to you via Client Side Rendering.
 
-**Database configuration**
+**Database configuration**<br>
 Uptill now we have only viewed static web pages that do not show any content coming from the database. In order to involve database, you need to provide credentials for your database. Don't worry, it's very easy. Just follow along.
 
 1. Open `knexfile.js` in the root of your project. You will see a `knexConfig` object in it that has several database configurations for different environments (development, staging, production). For testing on local machine, we need to update _development_ credentials. The default credentials are
@@ -108,19 +109,19 @@ knex migrate:up
 
 3. Congratulations! Now you have access to _users_ Api and you can call the following endpoints
 
-| HTTP Method | URL                             | Function                                                                                                                                                     |
-| ----------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| POST        | http://localhost:3000/users     | Create new user in database                                                                                                                                  |
-| GET         | http://localhost:3000/users/:id | Find a user by Id                                                                                                                                            |
-| PUT         | http://localhost:3000/users/:id | Update a user by Id                                                                                                                                          |
-| DELETE      | http://localhost:3000/users/:id | Delete a user by Id                                                                                                                                          |
-| GET         | http://localhost:3000/users     | Finds all users <br> You can also filter the users by providing query paramaters in the URL. Like, http://localhost:3000/users?email=farazahmad759@gmail.com |
+| HTTP Method | URL                             | Function                                                                                                                                                                                            |
+| ----------- | ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| POST        | http://localhost:3000/users     | Create new user in database                                                                                                                                                                         |
+| GET         | http://localhost:3000/users/:id | Find a user by Id                                                                                                                                                                                   |
+| PUT         | http://localhost:3000/users/:id | Update a user by Id                                                                                                                                                                                 |
+| DELETE      | http://localhost:3000/users/:id | Delete a user by Id                                                                                                                                                                                 |
+| GET         | http://localhost:3000/users     | Finds all users <br> Users can be filtered by providing the query paramaters in the URL. Like, http://localhost:3000/users?email=faraz will fetch all users whose email contains the string 'faraz' |
 
 ## Supported-commands
 
 Dricup CLI provides several helpful commands for creating database migrations, Models, Controllers, and Routes, which are listed below. Detailed in-depth description is provided in [documentation](./documentation/documentation.md)
 
-| Category           | Command                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| Action             | Command                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Create Project     | `dricup --create:project` <br> Creates a new project in the current working directory (CWD)                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | Create Migrations  | **Single**<br>`dricup --create:migrations --file="file_name.json"` <br> Reads `file_name.json` from _dricup/schemas_ directory and creates a database migration file in _migrations_ directory. <br><br> **Bulk**<br>`dricup --create:migrations --all` <br> Reads all `.json` files from _dricup/schemas_ directory and creates database migration files for all of them in _migrations_ directory                                                                                                                                           |
@@ -130,6 +131,46 @@ Dricup CLI provides several helpful commands for creating database migrations, M
 | Create CRUD APIs   | **Single**<br>`dricup --create:crud --file="file_name.json"` <br> Reads `file_name.json` from _dricup/schemas_ directory and creates Migration, Model, Controller and Route files in respective directories.<br><br> **Bulk**<br>`dricup --create:crud --all` <br> Reads all `.json` files from _dricup/schemas_ directory and creates Migrations, Models, Controllers and Routes for all of them in respective directories. <hr> Note: The `crud` commands above will also create/update an additional file `routes.js` in routes directory. |
 
 ## Documentation
+
+You can view in-depth documentation [here](./documentation/documentation.md), but let's get an overview here.
+When you first run `dricup --create:project` command, it will create the following file structure.
+
+    .
+    ├── client                  # CSR rendered apps will be stored here
+    │   └── app-1
+    │   │   └── build
+    │   │       └── index.html  # it will be rendered at localhost:3000/app-1
+    │   └── `client.js`         # IMPORTANT: contains names and routes of all the client apps
+    ├── controllers             # API files should be placed in this directory
+    ├── dricup                  # all schemas files should be placed in dricup/schemas directory
+    │   └── schemas
+    │       └── users.json
+    ├── migrations              # database migration files are stored here
+    ├── models                  # Models in MVC are created in this directory
+    ├── public                  # images, stylesheets and javascript files can be placed here
+    ├── routes                  # contains application routes
+    │   └── index.js
+    │   └── `routes.js`         # IMPORTANT: stores information about all other files in the directory
+    │   └── users.js
+    ├── views                   # Views (in MVC) are stored here
+    ├── app.js
+    ├── dricup.config.json      # IMPORTANT: do not delete/modify it
+    ├── index.js                # IMPORTANT: entry file of the app
+    ├── knexfile.js             # IMPORTANT: database configurations are stored here
+    ├── now.json                # IMPORTANT: config file for deployment to Vercel
+    └── README.md
+
+## Notes
+
+### Client Apps
+
+- Client-side rendered apps should be stored "directly" inside /client directory.
+- Each app should have a "build" directory containing an index.html at the minimum. Otherwise it won't work. This applies to HTML as well as Js-framework'ed apps. If your CSR rendered app is React/Vue/Angular app, the `npm build` command should output an `index.html` file in "build" directory.
+- Each app should be registered in client/client.js file, otherwise it won't be displayed. The route where this app will be displayed, is also configured in client/client.js file.
+
+### CRUD Api
+
+Whether you want Migrations, Models, Controllers or Routes (or even full API creation), all you have to do is provide a `some_schema.json` file for every database table. The Schema files should be of the following format.
 
 ```
 {
