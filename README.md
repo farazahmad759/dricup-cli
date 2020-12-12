@@ -202,7 +202,7 @@ Whether you want Migrations, Models, Controllers or Routes (or even full API cre
 - Dricup CLI is not a framework, rather it makes use of [Express JS](https://expressjs.com/) framework to create the MERN, MEAN and MEVN stack apps quickly.
 - The basic boilerplate code and directory structure has been taken from [express-generator](https://github.com/expressjs/generator)
 - Database migrations are handled using [knex](http://knexjs.org/)
-- [Objection Js](https://vincit.github.io/objection.js/) is used to created Models and Controllers (CRUD Api). This is the only supported [ORM](https://en.wikipedia.org/wiki/Object%E2%80%93relational_mapping#:~:text=Object%2Drelational%20mapping%20(ORM%2C,from%20within%20the%20programming%20language.) as of now. Support for other ORM's will be added soon.
+- [Objection Js](https://vincit.github.io/objection.js/) is used to created Models and Controllers (CRUD Api). This is the only supported ORM as of now. Support for other ORM's will be added soon.
 - [Nodemon](https://github.com/remy/nodemon)
 
 ## Authors
@@ -213,7 +213,7 @@ Whether you want Migrations, Models, Controllers or Routes (or even full API cre
 
 This package has been created to save the precious time that each developer spends while setting up every project. It is still in beta. I am actively working to make it robust. If you find this helpful and want to support me, there are two ways you can do this.
 
-1. <a href="https://www.patreon.com/bePatron?u=46870467" data-patreon-widget-type="become-patron-button">Become a Patron!</a><script async src="https://c6.patreon.com/becomePatronButton.bundle.js"></script>
+1. [Become a Patreon](https://www.patreon.com/farazahmad759)
 
 2. Work with me (Contact: farazahmad759@gmail.com)
 
