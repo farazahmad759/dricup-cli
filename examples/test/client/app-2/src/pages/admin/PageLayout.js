@@ -1,9 +1,9 @@
 import { Layout, Menu } from "antd";
-import { UserOutlined } from "@ant-design/icons";
-
+import { sidebar as sidebarData } from "../../datasource/admin.data";
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 const PageLayout = (props) => {
+  console.log(sidebarData);
   return (
     <Layout>
       <Header className="header">
@@ -27,11 +27,21 @@ const PageLayout = (props) => {
           }}
         >
           <div className="logo" />
-          <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
-            <SubMenu key="sub1" title="Tasks">
-              <Menu.Item key="1">Tasks List</Menu.Item>
-              <Menu.Item key="2">New Task</Menu.Item>
-            </SubMenu>
+          <Menu theme="dark" mode="inline" defaultSelectedKeys={["0.0"]}>
+            {sidebarData.items.map((item, i) => {
+              if (item.link) {
+                return <Menu.Item key={item.key}>{item.title}</Menu.Item>;
+              }
+              return (
+                <SubMenu key="sub1" title={item.title}>
+                  {item.children.map((level1, j) => {
+                    return (
+                      <Menu.Item key={level1.key}>{level1.title}</Menu.Item>
+                    );
+                  })}
+                </SubMenu>
+              );
+            })}
           </Menu>
         </Sider>
         <Content style={{ margin: "24px 16px 0" }}>{props.children}</Content>
