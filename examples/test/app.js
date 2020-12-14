@@ -7,10 +7,8 @@ var logger = require("morgan");
 var app = express();
 
 // view engine setup
-var reactViews = require("express-react-views");
 app.set("views", path.join(__dirname, "views"));
-app.engine("jsx", reactViews.createEngine());
-app.set("view engine", "jsx");
+app.set("view engine", "hbs");
 
 app.use(logger("dev"));
 app.use(express.json());
