@@ -3,7 +3,14 @@ import "./App.css";
 import { default as DcAdminLayout } from "./layouts/admin.layout";
 import { AdminTable } from "./components/admin/admin.table";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { Home, DcDashboard, DcTasks } from "./pages/pages.export";
+import {
+  Home,
+  DcDashboard,
+  DcTasks,
+  DcTasksCreate,
+  DcTasksEdit,
+  DcTasksView,
+} from "./pages/pages.export";
 function App() {
   return (
     <div className="App">
@@ -13,8 +20,15 @@ function App() {
             <Route path="/dashboard">
               <DcAdminLayout>
                 <Switch>
-                  <Route path="/dashboard/tasks/:id">Edit Task</Route>
-                  <Route path="/dashboard/tasks/create">Create Task</Route>
+                  <Route path="/dashboard/tasks/create">
+                    <DcTasksCreate />
+                  </Route>
+                  <Route path="/dashboard/tasks/:id/edit">
+                    <DcTasksEdit />
+                  </Route>
+                  <Route path="/dashboard/tasks/:id">
+                    <DcTasksView />
+                  </Route>
                   <Route path="/dashboard/tasks">
                     <DcTasks />
                   </Route>

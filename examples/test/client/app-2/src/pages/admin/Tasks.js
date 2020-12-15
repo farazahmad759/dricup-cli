@@ -1,5 +1,5 @@
 import React from "react";
-import { AdminTable } from "./../../components/admin/admin.table";
+import { AdminTable } from "./../../components/components.export";
 export const Tasks = () => {
   return (
     <div>
