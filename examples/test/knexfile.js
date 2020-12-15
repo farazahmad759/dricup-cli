@@ -7,7 +7,7 @@ var knexConfig = {
       host: "127.0.0.1",
       database: "express-test-app",
       user: "root",
-      password: "",
+      password: "password",
     },
     migrations: {
       directory: __dirname + "/migrations",

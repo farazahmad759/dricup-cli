@@ -5,7 +5,7 @@ export const Tasks = () => {
   return (
     <div>
       Edit Task
-      <AdminForm formData={formData} />
+      <AdminForm formData={formData} action="update" />
     </div>
   );
 };

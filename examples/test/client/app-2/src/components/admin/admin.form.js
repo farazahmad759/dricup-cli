@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { Form, Input, Button, Select } from "antd";
+import axios from "axios";
 const { Option } = Select;
-
+const { TextArea } = Input;
 const layout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 },
@@ -15,7 +16,17 @@ export const AdminForm = (props) => {
   const onGenderChange = (value) => {};
 
   const onFinish = (values) => {
-    console.log(values);
+    if (props.action === "create") {
+      console.log("create", values);
+      axios.post("http://localhost:8000/tasks", values).then((res) => {
+        console.log(res.data);
+      });
+    } else if (props.action === "update") {
+      console.log("update", values);
+      axios.put("http://localhost:8000/tasks/1", values).then((res) => {
+        console.log(res.data);
+      });
+    }
   };
 
   const onReset = () => {
@@ -40,17 +51,23 @@ export const AdminForm = (props) => {
             label={item.title}
             rules={[{ required: item.required }]}
           >
-            {item.type.includes("input") ? (
+            {item.type.includes("string") ? (
               <Input />
+            ) : item.type.includes("text") ? (
+              <TextArea rows={4} />
             ) : item.type.includes("dropdown") ? (
               <Select
                 placeholder={item.placeholder}
                 onChange={onGenderChange}
                 allowClear
               >
-                <Option value="male">male</Option>
-                <Option value="female">female</Option>
-                <Option value="other">other</Option>
+                {item.options.map((_option, j) => {
+                  return (
+                    <Option key={j} value={_option.value}>
+                      {_option.title}
+                    </Option>
+                  );
+                })}
               </Select>
             ) : (
               ""

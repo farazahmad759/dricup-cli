@@ -1,0 +1,17 @@
+{
+  "tableName": "tasks",
+  "fields": [
+    {
+      "title": "title",
+      "type": "string"
+    },
+    {
+      "title": "description",
+      "type": "text"
+    },
+    {
+      "title": "status",
+      "type": "string"
+    }
+  ]
+}

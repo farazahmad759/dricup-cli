@@ -1,8 +1,9 @@
 
     
+var Task = require('./tasks')
 var User = require('./users')
     let models = {
-      User
+      Task,User
     }
     module.exports = models;
     

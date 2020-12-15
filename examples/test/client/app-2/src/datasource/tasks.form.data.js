@@ -5,7 +5,7 @@ let data = [
     required: true,
     placeholder: "",
     initialValue: "New task",
-    type: "input:text",
+    type: "string",
   },
   {
     name: "description",
@@ -13,15 +13,25 @@ let data = [
     required: false,
     placeholder: "",
     initialValue: "New task's description",
-    type: "input:textarea",
+    type: "text",
   },
   {
     name: "status",
     title: "Status",
     required: true,
-    placeholder: "Select gender",
-    initialValue: "male",
+    placeholder: "Select status",
+    initialValue: "todo",
     type: "dropdown",
+    options: [
+      {
+        title: "Todo",
+        value: "todo",
+      },
+      {
+        title: "Completed",
+        value: "completed",
+      },
+    ],
   },
 ];
 

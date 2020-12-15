@@ -13,7 +13,7 @@ export const Tasks = (props) => {
   return (
     <div>
       Create Task
-      <AdminForm formData={formData} />
+      <AdminForm formData={formData} action="create" />
     </div>
   );
 };
