@@ -3,6 +3,7 @@ import "./App.css";
 import { default as DcAdminLayout } from "./layouts/admin.layout";
 import { AdminTable } from "./components/admin/admin.table";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Home, DcDashboard, DcTasks } from "./pages/pages.export";
 function App() {
   return (
     <div className="App">
@@ -15,16 +16,16 @@ function App() {
                   <Route path="/dashboard/tasks/:id">Edit Task</Route>
                   <Route path="/dashboard/tasks/create">Create Task</Route>
                   <Route path="/dashboard/tasks">
-                    <AdminTable />
+                    <DcTasks />
                   </Route>
                   <Route path="/">
-                    <div>Dashboard</div>
+                    <DcDashboard />
                   </Route>
                 </Switch>
               </DcAdminLayout>
             </Route>
             <Route path="/">
-              <div>Home</div>
+              <Home />
             </Route>
           </Switch>
         </div>
