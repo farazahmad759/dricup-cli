@@ -1,7 +1,7 @@
 import "antd/dist/antd.css";
 import "./App.css";
 import { default as DcAdminLayout } from "./layouts/admin.layout";
-import { AdminTable } from "./components/admin.table";
+import { AdminTable } from "./components/admin/admin.table";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 function App() {
   return (
@@ -12,13 +12,10 @@ function App() {
             <Route path="/dashboard">
               <DcAdminLayout>
                 <Switch>
+                  <Route path="/dashboard/tasks/:id">Edit Task</Route>
+                  <Route path="/dashboard/tasks/create">Create Task</Route>
                   <Route path="/dashboard/tasks">
-                    <div
-                      className="site-layout-background"
-                      style={{ padding: 24, minHeight: 360 }}
-                    >
-                      <AdminTable />
-                    </div>
+                    <AdminTable />
                   </Route>
                   <Route path="/">
                     <div>Dashboard</div>
