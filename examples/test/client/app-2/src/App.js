@@ -1,21 +1,37 @@
 import "antd/dist/antd.css";
 import "./App.css";
-import PageLayout from "./pages/admin/PageLayout";
+import { default as DcAdminLayout } from "./layouts/admin.layout";
 import { AdminTable } from "./components/admin.table";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <AdminTable />
-        <PageLayout>
-          <div
-            className="site-layout-background"
-            style={{ padding: 24, minHeight: 360 }}
-          >
-            content
-          </div>
-        </PageLayout>
-      </header>
+      <Router>
+        <div>
+          <Switch>
+            <Route path="/dashboard">
+              <DcAdminLayout>
+                <Switch>
+                  <Route path="/dashboard/tasks">
+                    <div
+                      className="site-layout-background"
+                      style={{ padding: 24, minHeight: 360 }}
+                    >
+                      <AdminTable />
+                    </div>
+                  </Route>
+                  <Route path="/">
+                    <div>Dashboard</div>
+                  </Route>
+                </Switch>
+              </DcAdminLayout>
+            </Route>
+            <Route path="/">
+              <div>Home</div>
+            </Route>
+          </Switch>
+        </div>
+      </Router>
     </div>
   );
 }

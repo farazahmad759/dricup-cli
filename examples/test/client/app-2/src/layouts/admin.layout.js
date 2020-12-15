@@ -1,8 +1,8 @@
 import { Layout, Menu } from "antd";
-import { sidebar as sidebarData } from "../../datasource/admin.data";
+import { sidebar as sidebarData } from "../datasource/admin.data";
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
-const PageLayout = (props) => {
+const DcLayout = (props) => {
   console.log(sidebarData);
   return (
     <Layout>
@@ -53,4 +53,4 @@ const PageLayout = (props) => {
   );
 };
 
-export default PageLayout;
+export default DcLayout;
