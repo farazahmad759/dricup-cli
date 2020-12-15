@@ -20,16 +20,16 @@ function App() {
             <Route path="/dashboard">
               <DcAdminLayout>
                 <Switch>
-                  <Route path="/dashboard/tasks/create">
+                  <Route exact path="/dashboard/tasks/create">
                     <DcTasksCreate />
                   </Route>
-                  <Route path="/dashboard/tasks/:id/edit">
+                  <Route exact path="/dashboard/tasks/:id/edit">
                     <DcTasksEdit />
                   </Route>
-                  <Route path="/dashboard/tasks/:id">
+                  <Route exact path="/dashboard/tasks/:id">
                     <DcTasksView />
                   </Route>
-                  <Route path="/dashboard/tasks">
+                  <Route exact path="/dashboard/tasks">
                     <DcTasks />
                   </Route>
                   <Route path="/">
