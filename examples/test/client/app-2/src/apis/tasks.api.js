@@ -44,9 +44,13 @@ export const dcApi = {
   getAll: async (params) => {
     let res = await axios.get("http://localhost:8000/tasks");
     if (!res.data.data) {
-      return { error: "Task not found with id = " + params.id };
+      return { error: "Error in fetching tasks" };
     }
-    return res.data.data;
+    let _data = res.data.data;
+    _data.forEach((item, i) => {
+      _data[i].key = _data[i].id;
+    });
+    return _data;
   },
 };
 

@@ -1,40 +1,15 @@
-import React, { useState } from "react";
-import { Table, Input, Button, Space } from "antd";
-// import Highlighter from "react-highlight-words";
+import React, { useState, useReducer, useEffect } from "react";
+import { Table } from "antd";
+import { Input, Button, Space } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
+// import Highlighter from "react-highlight-words";
 
 export const AdminTable = (props) => {
+  const [columns, setColumns] = useState(null);
   const [state, setState] = useState({
     searchText: "",
     searchedColumn: "",
   });
-
-  const data = [
-    {
-      key: "1",
-      title: "John Brown",
-      description: 32,
-      status: "New York No. 1 Lake Park",
-    },
-    {
-      key: "2",
-      title: "Joe Black",
-      description: 42,
-      status: "London No. 1 Lake Park",
-    },
-    {
-      key: "3",
-      title: "Jim Green",
-      description: 32,
-      status: "Sidney No. 1 Lake Park",
-    },
-    {
-      key: "4",
-      title: "Jim Red",
-      description: 32,
-      status: "London No. 2 Lake Park",
-    },
-  ];
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -48,29 +23,6 @@ export const AdminTable = (props) => {
     clearFilters();
     setState({ searchText: "" });
   };
-  const columns = [
-    {
-      title: "Title",
-      dataIndex: "title",
-      key: "title",
-      width: "30%",
-      ...getColumnSearchProps("title"),
-    },
-    {
-      title: "Description",
-      dataIndex: "description",
-      key: "description",
-      width: "20%",
-      //   ...hhh(),
-      ...getColumnSearchProps("description"),
-    },
-    {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      ...getColumnSearchProps("status"),
-    },
-  ];
   function getColumnSearchProps(dataIndex) {
     let searchInput = "";
     return {
@@ -140,9 +92,35 @@ export const AdminTable = (props) => {
           : text,
     };
   }
+  useEffect(() => {
+    async function fetchData() {
+      let _cols = [];
+      Object.keys(props.data[0]).forEach((k) => {
+        if (k !== "key") {
+          let _col = {
+            title: k,
+            dataIndex: k,
+            key: k,
+            width: "30%",
+            ...getColumnSearchProps(k),
+          };
+          _cols.push(_col);
+        }
+      });
+      _cols.push({
+        title: "actions",
+      });
+      console.log(props.data);
+      setColumns(_cols);
+    }
+    if (props.data && !columns) {
+      console.log(props.data);
+      fetchData();
+    }
+  });
   return (
     <div>
-      <Table columns={columns} dataSource={data} />
+      <Table columns={columns} dataSource={props.data} />
     </div>
   );
 };
