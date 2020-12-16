@@ -52,7 +52,9 @@ export const dcApi = {
     return data;
   },
   getAll: async (params) => {
-    let res = await axios.get("http://localhost:8000/tasks");
+    let res = await axios.get("http://localhost:8000/tasks", {
+      params: { ...params },
+    });
     if (!res.data.data) {
       return { error: "Error in fetching tasks" };
     }
