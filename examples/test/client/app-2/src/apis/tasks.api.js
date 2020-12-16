@@ -18,7 +18,7 @@ export const dcApi = {
     }
     return res.data.data;
   },
-  fetchFormData: async (params) => {
+  getFormData: async (params) => {
     let res = await axios.get("http://localhost:8000/tasks/" + params.id);
     if (!res.data.data) {
       return { error: "Task not found with id = " + params.id };
@@ -40,6 +40,13 @@ export const dcApi = {
     });
 
     return data;
+  },
+  getAll: async (params) => {
+    let res = await axios.get("http://localhost:8000/tasks");
+    if (!res.data.data) {
+      return { error: "Task not found with id = " + params.id };
+    }
+    return res.data.data;
   },
 };
 

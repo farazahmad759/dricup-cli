@@ -12,27 +12,27 @@ export const AdminTable = (props) => {
   const data = [
     {
       key: "1",
-      name: "John Brown",
-      age: 32,
-      address: "New York No. 1 Lake Park",
+      title: "John Brown",
+      description: 32,
+      status: "New York No. 1 Lake Park",
     },
     {
       key: "2",
-      name: "Joe Black",
-      age: 42,
-      address: "London No. 1 Lake Park",
+      title: "Joe Black",
+      description: 42,
+      status: "London No. 1 Lake Park",
     },
     {
       key: "3",
-      name: "Jim Green",
-      age: 32,
-      address: "Sidney No. 1 Lake Park",
+      title: "Jim Green",
+      description: 32,
+      status: "Sidney No. 1 Lake Park",
     },
     {
       key: "4",
-      name: "Jim Red",
-      age: 32,
-      address: "London No. 2 Lake Park",
+      title: "Jim Red",
+      description: 32,
+      status: "London No. 2 Lake Park",
     },
   ];
 
@@ -50,25 +50,25 @@ export const AdminTable = (props) => {
   };
   const columns = [
     {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
+      title: "Title",
+      dataIndex: "title",
+      key: "title",
       width: "30%",
-      ...getColumnSearchProps("name"),
+      ...getColumnSearchProps("title"),
     },
     {
-      title: "Age",
-      dataIndex: "age",
-      key: "age",
+      title: "Description",
+      dataIndex: "description",
+      key: "description",
       width: "20%",
       //   ...hhh(),
-      ...getColumnSearchProps("age"),
+      ...getColumnSearchProps("description"),
     },
     {
-      title: "Address",
-      dataIndex: "address",
-      key: "address",
-      ...getColumnSearchProps("address"),
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      ...getColumnSearchProps("status"),
     },
   ];
   function getColumnSearchProps(dataIndex) {

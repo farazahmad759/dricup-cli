@@ -11,7 +11,7 @@ export const Tasks = () => {
 
   useEffect(() => {
     async function fetchData() {
-      let data = await tasksApi.fetchFormData({ id });
+      let data = await tasksApi.getFormData({ id });
       dispatchFormData({ type: "fetch", payload: data });
     }
     fetchData();

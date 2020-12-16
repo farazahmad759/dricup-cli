@@ -18,12 +18,12 @@ export const AdminForm = (props) => {
   const onFinish = async (values) => {
     console.log("create/update", values);
     if (props.action === "create") {
-      let res = await tasksApi.createOne({
+      tasksApi.createOne({
         data: values,
         msg: "New task created successfully",
       });
     } else if (props.action === "update") {
-      let res = await tasksApi.updateOne({
+      tasksApi.updateOne({
         data: values,
         id: props.id,
         msg: "Task updated successfully with id = " + props.id,
