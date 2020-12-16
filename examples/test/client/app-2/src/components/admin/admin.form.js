@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Form, Input, Button, Select } from "antd";
 import axios from "axios";
+import { tasksApi } from "./../../apis/api";
 const { Option } = Select;
 const { TextArea } = Input;
 const layout = {
@@ -14,18 +15,19 @@ export const AdminForm = (props) => {
   const [form] = Form.useForm();
   const onGenderChange = (value) => {};
 
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     console.log("create/update", values);
     if (props.action === "create") {
-      axios.post("http://localhost:8000/tasks", values).then((res) => {
-        console.log(res.data);
+      let res = await tasksApi.createOne({
+        data: values,
+        msg: "New task created successfully",
       });
     } else if (props.action === "update") {
-      axios
-        .put("http://localhost:8000/tasks/" + props.id, values)
-        .then((res) => {
-          console.log(res.data);
-        });
+      let res = await tasksApi.updateOne({
+        data: values,
+        id: props.id,
+        msg: "Task updated successfully with id = " + props.id,
+      });
     }
   };
 
@@ -35,11 +37,20 @@ export const AdminForm = (props) => {
 
   useEffect(() => {
     let initialValues = {};
-    props.formData.forEach((item) => {
-      initialValues[item.name] = item.initialValue;
-    });
-    form.setFieldsValue(initialValues);
+    if (props.formData.constructor === [].constructor) {
+      props.formData.forEach((item) => {
+        initialValues[item.name] = item.initialValue;
+      });
+      form.setFieldsValue(initialValues);
+    }
   }, []);
+
+  if (props.formData === null) {
+    return "Loading";
+  }
+  if (props.formData.error) {
+    return props.formData.error;
+  }
   return (
     <Form {...layout} form={form} name="control-hooks" onFinish={onFinish}>
       {props.formData.map((item, i) => {

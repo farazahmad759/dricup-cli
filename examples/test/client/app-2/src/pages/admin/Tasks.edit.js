@@ -6,13 +6,13 @@ import { tasksReducer } from "./../../reducers/reducers";
 import { tasksApi } from "./../../apis/api";
 // import { data as formData } from "../../datasource/tasks.form.data";
 export const Tasks = () => {
-  const [formData, setFormData] = useReducer(tasksReducer, null);
+  const [formData, dispatchFormData] = useReducer(tasksReducer, null);
   let { id } = useParams();
 
   useEffect(() => {
     async function fetchData() {
       let data = await tasksApi.fetchFormData({ id });
-      setFormData({ type: "fetch", payload: data });
+      dispatchFormData({ type: "fetch", payload: data });
     }
     fetchData();
   }, []);
