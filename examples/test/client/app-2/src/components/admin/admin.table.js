@@ -1,7 +1,9 @@
-import React, { useState, useReducer, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Table } from "antd";
-import { Input, Button, Space } from "antd";
+import { Input, Button, Space, Popconfirm } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
+import { tasksApi } from "../../apis/api";
 // import Highlighter from "react-highlight-words";
 
 export const AdminTable = (props) => {
@@ -109,6 +111,27 @@ export const AdminTable = (props) => {
       });
       _cols.push({
         title: "actions",
+        key: "action",
+        render: (text, record) => (
+          <Space size="middle">
+            <Link to={"/dashboard/tasks/" + record.key + "/edit"}>Edit</Link>
+            <Popconfirm
+              title="Are you sure delete this task?"
+              onConfirm={async () => {
+                await tasksApi.deleteOne({
+                  id: record.key,
+                  msg: "Task deleted successfully",
+                });
+                props.fetchData();
+              }}
+              onCancel={() => {}}
+              okText="Yes"
+              cancelText="No"
+            >
+              <div style={{ color: "#1890ff", cursor: "pointer" }}>Delete</div>
+            </Popconfirm>
+          </Space>
+        ),
       });
       console.log(props.data);
       setColumns(_cols);

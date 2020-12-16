@@ -18,6 +18,16 @@ export const dcApi = {
     }
     return res.data.data;
   },
+  deleteOne: async (params) => {
+    let res = await axios.delete(
+      "http://localhost:8000/tasks/" + params.id,
+      params.data
+    );
+    if (params.msg) {
+      message.success(params.msg);
+    }
+    return res.data.data;
+  },
   getFormData: async (params) => {
     let res = await axios.get("http://localhost:8000/tasks/" + params.id);
     if (!res.data.data) {

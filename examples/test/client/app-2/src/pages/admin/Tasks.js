@@ -5,17 +5,18 @@ import { tasksApi } from "../../apis/api";
 
 export const Tasks = (props) => {
   const [data, dispatchData] = useReducer(tasksReducer, null);
+  async function fetchData() {
+    let res = await tasksApi.getAll({});
+    dispatchData({ type: "fetch", payload: res });
+  }
+
   useEffect(() => {
-    async function fetchData() {
-      let res = await tasksApi.getAll({});
-      dispatchData({ type: "fetch", payload: res });
-    }
     fetchData();
   }, []);
   return (
     <div>
       React Admin Task Page
-      <AdminTable data={data} />
+      <AdminTable data={data} fetchData={fetchData} />
     </div>
   );
 };
