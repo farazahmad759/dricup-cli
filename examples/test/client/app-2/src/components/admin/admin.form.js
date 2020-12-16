@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Input, Button, Select } from "antd";
 import axios from "axios";
 const { Option } = Select;
@@ -12,20 +12,20 @@ const tailLayout = {
 };
 export const AdminForm = (props) => {
   const [form] = Form.useForm();
-
   const onGenderChange = (value) => {};
 
   const onFinish = (values) => {
+    console.log("create/update", values);
     if (props.action === "create") {
-      console.log("create", values);
       axios.post("http://localhost:8000/tasks", values).then((res) => {
         console.log(res.data);
       });
     } else if (props.action === "update") {
-      console.log("update", values);
-      axios.put("http://localhost:8000/tasks/1", values).then((res) => {
-        console.log(res.data);
-      });
+      axios
+        .put("http://localhost:8000/tasks/" + props.id, values)
+        .then((res) => {
+          console.log(res.data);
+        });
     }
   };
 
@@ -40,7 +40,6 @@ export const AdminForm = (props) => {
     });
     form.setFieldsValue(initialValues);
   }, []);
-
   return (
     <Form {...layout} form={form} name="control-hooks" onFinish={onFinish}>
       {props.formData.map((item, i) => {
