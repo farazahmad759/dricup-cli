@@ -16,7 +16,7 @@ export const Tasks = (props) => {
   return (
     <div>
       React Admin Task Page
-      <AdminTable data={data} fetchData={fetchData} />
+      <AdminTable data={data} actions={{ ...tasksApi, fetchData }} />
     </div>
   );
 };

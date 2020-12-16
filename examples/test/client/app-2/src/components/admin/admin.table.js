@@ -3,7 +3,6 @@ import { Table } from "antd";
 import { Input, Button, Space, Popconfirm } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import { tasksApi } from "../../apis/api";
 // import Highlighter from "react-highlight-words";
 
 export const AdminTable = (props) => {
@@ -118,11 +117,11 @@ export const AdminTable = (props) => {
             <Popconfirm
               title="Are you sure delete this task?"
               onConfirm={async () => {
-                await tasksApi.deleteOne({
+                await props.actions.deleteOne({
                   id: record.key,
                   msg: "Task deleted successfully",
                 });
-                props.fetchData();
+                props.actions.fetchData();
               }}
               onCancel={() => {}}
               okText="Yes"
