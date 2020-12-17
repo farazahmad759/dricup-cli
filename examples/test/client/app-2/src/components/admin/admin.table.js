@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import { Table } from "antd";
 import { Input, Button, Space, Popconfirm } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import { urlReducer } from "../../reducers/reducers";
 // import Highlighter from "react-highlight-words";
 
 export const AdminTable = (props) => {
+  const [urlState, dispatchUrl] = useReducer(urlReducer, {});
+  const history = useHistory();
   const [columns, setColumns] = useState(null);
   const [state, setState] = useState({
     searchText: "",
@@ -18,6 +21,8 @@ export const AdminTable = (props) => {
       searchText: selectedKeys[0],
       searchedColumn: dataIndex,
     });
+    history.push("?" + dataIndex + "=" + selectedKeys[0].toLowerCase());
+    props.actions.dispatchUrl({ type: "getSearchParams" });
   };
 
   const handleReset = (clearFilters) => {
@@ -69,13 +74,15 @@ export const AdminTable = (props) => {
       filterIcon: (filtered) => (
         <SearchOutlined style={{ color: filtered ? "#1890ff" : undefined }} />
       ),
-      onFilter: (value, record) =>
-        record[dataIndex]
-          ? record[dataIndex]
-              .toString()
-              .toLowerCase()
-              .includes(value.toLowerCase())
-          : "",
+      onFilter: (value, record) => {
+        return record;
+        // return record[dataIndex]
+        //   ? record[dataIndex]
+        //       .toString()
+        //       .toLowerCase()
+        //       .includes(value.toLowerCase())
+        //   : "";
+      },
       onFilterDropdownVisibleChange: (visible) => {
         if (visible) {
           setTimeout(() => searchInput.select(), 100);
